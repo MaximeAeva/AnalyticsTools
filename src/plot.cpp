@@ -44,7 +44,7 @@ int colorInt(char color)
     else return 15; 
 }
 
-plot::plot(Axis x, Axis y, std::vector<Point> data, char* title, char color)
+void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend)
 {
     if (system("CLS")) system("clear");
     std::cout << "\033[2J";
@@ -62,7 +62,7 @@ plot::plot(Axis x, Axis y, std::vector<Point> data, char* title, char color)
     }
     std::cout << std::endl;
     //Graph Part
-    if(data.empty())
+    if(dataCluster.empty())
     {
         SetConsoleTextAttribute(hConsole, colorInt(y.color));
         std::cout << "^" << std::endl;
@@ -88,25 +88,27 @@ plot::plot(Axis x, Axis y, std::vector<Point> data, char* title, char color)
     }
     else
     {
-        SetConsoleTextAttribute(hConsole, colorInt(y.color));
-        std::cout << "^" << std::endl;
         for(int row = 0; row < floor((y.range[1]-y.range[0])*(1/y.step)); row++)
         {
             for(int col = 0; col < floor((x.range[1]-x.range[0])*(1/x.step)); col++)
             {
                 bool isVal = false;
                 Point crtPos = {x.range[0]+(col*x.step), y.range[1]-(row*y.step)};
-                for(int i = 0; i<data.size(); i++)
+                for(int dl = 0; dl<dataCluster.size(); dl++)
                 {
-                    if((std::abs(data[i].x-crtPos.x)<std::abs(x.step/2)) 
-                        && (std::abs(data[i].y-crtPos.y)<std::abs(y.step/2)))
-                        {
-                           SetConsoleTextAttribute(hConsole, colorInt(color));
-                           std::cout << "+";
-                           SetConsoleTextAttribute(hConsole, colorInt('w'));
-                           isVal = true;
-                           break;  
-                        }   
+                    for(int i = 0; i<dataCluster[dl].values.size(); i++)
+                    {
+                        if((std::abs(dataCluster[dl].values[i].x-crtPos.x)<std::abs(x.step/2)) 
+                            && (std::abs(dataCluster[dl].values[i].y-crtPos.y)<std::abs(y.step/2)))
+                            {
+                            SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
+                            std::cout << "+";
+                            SetConsoleTextAttribute(hConsole, colorInt('w'));
+                            isVal = true;
+                            break;  
+                            }
+                            if(isVal) break;
+                    }      
                 }
                 if(!isVal)
                 {
@@ -121,13 +123,15 @@ plot::plot(Axis x, Axis y, std::vector<Point> data, char* title, char color)
                     else if(std::abs(crtPos.x) < std::abs(x.step/2))
                     {
                             SetConsoleTextAttribute(hConsole, colorInt(y.color));
-                            std::cout << "|";
+                            if(std::abs(crtPos.y-(y.range[1]))<std::abs(y.step/2)) std::cout << "^";
+                            else std::cout << "|";
                             SetConsoleTextAttribute(hConsole, colorInt('w'));
                     }
                     else if(std::abs(crtPos.y) < std::abs(y.step/2))
                     {
                             SetConsoleTextAttribute(hConsole, colorInt(x.color));
-                            std::cout << "-";
+                            if(std::abs(crtPos.x-(x.range[1]))<std::abs(x.step/2)) std::cout << ">";
+                            else std::cout << "-";
                             SetConsoleTextAttribute(hConsole, colorInt('w'));
                     } 
                     else
@@ -139,12 +143,14 @@ plot::plot(Axis x, Axis y, std::vector<Point> data, char* title, char color)
             }
             std::cout << std::endl;
         }
+        for(int dl = 0; dl<dataCluster.size(); dl++)
+        {
+            SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
+            std::cout << dataCluster[dl].legend;
+            SetConsoleTextAttribute(hConsole, colorInt('w'));
+            std::cout << " / ";
+        }
     }
-}
-
-plot::~plot()
-{
-
 }
 
 

@@ -20,15 +20,13 @@ struct Point{
     float y;
 };
 
-class plot{
-
-    public:
-        plot(Axis x, Axis y, std::vector<Point> data = {}, char* title = "Title", char color = 'w');
-        ~plot();
-
-    private:
-        Axis ord;
-        Axis abs;
+struct data{
+    std::vector<Point> values;
+    char* legend;
+    char color;
 };
+
+void plot(Axis x, Axis y, std::vector<data> dataCluster = {}, char* title = "Title", bool legend = false);
+
 
 #endif
