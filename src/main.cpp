@@ -1,5 +1,6 @@
 #include <iostream>
 #include "plot.hpp"
+#include "leastSquares.hpp"
 
 int main()
 {
@@ -8,46 +9,65 @@ int main()
     data f1;
     data f2;
     data f3;
-    x.range[0] = -5;
-    x.range[1] = 5;
-    x.step = 0.1;
-    y.step = 0.5;
-    y.range[0] = -8;
-    y.range[1] = 8;
-    for(int i = -50; i<50; i++)
+    std::vector<Point> toSort;
+    std::vector<Point> sorted;
+
+    for(int i = 0; i<10; i++)
     {
-        f1.color = 'r';
+        Point pt;
+        pt.x = int(10*cos(i));
+        pt.y = 0;
+        std::cout << pt.x << " ";
+        toSort.push_back(pt);
+    }
+    sorted = mergeSort(toSort);
+    std::cout << std::endl;
+    for(int i = 0; i<10; i++)
+    {
+        std::cout << sorted[i].x << " ";
+    }
+    x.range[0] = -20;
+    x.range[1] = 20;
+    x.step = 0.25;
+    y.color = x.color = 'b';
+    y.step = 0.25;
+    y.range[0] = -4;
+    y.range[1] = 6;
+    for(int i = -150; i<150; i++)
+    {
+        f1.color = 'v';
         float k = i*0.1;
         Point pt;
         pt.x = k; 
-        pt.y = 5*sin(k);
+        pt.y = -5/k;
         f1.values.push_back(pt);
         f1.legend = "f1 : 5*sin(x)";
     }
-    for(int i = -50; i<50; i++)
+    for(int i = -150; i<150; i++)
     {
-        f2.color = 'b';
+        f2.color = 'g';
         float k = i*0.1;
         Point pt;
         pt.x = k; 
-        pt.y = 5*cos(k);
+        pt.y = 5/k;
         f2.values.push_back(pt);
-        f2.legend = "f2 : 5*cos(x)";
+        f2.legend = "f2 : 1/x";
     }
-    for(int i = -50; i<50; i++)
+    for(int i = -150; i<150; i++)
     {
-        f3.color = 'g';
+        f3.color = 'r';
         float k = i*0.1;
         Point pt;
         pt.x = k; 
-        pt.y = 5*(cos(k)+sin(k));
+        pt.y = 5*sin(k)/k;;
         f3.values.push_back(pt);
-        f3.legend = "f3 : f1(x)+f2(x)";
+        f3.legend = "f3 : sinc(x)";
     }
+
     std::vector<data> dclust;
     dclust.push_back(f3);
-    dclust.push_back(f1);
+    //dclust.push_back(f1);
     dclust.push_back(f2);
-    plot(x, y, dclust, "Some functions", true);
+    //plot(x, y, dclust, "Hat function", true);
     return 0;
 }

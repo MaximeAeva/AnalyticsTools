@@ -30,8 +30,8 @@ int c_size(char* aChar)
 /**
  * @brief Intuitive way to set colors
  * 
- * @param color 
- * @return int 
+ * @param color {b(lue), g(reen), c(yan), r(ed), v(iolet), y(ellow), w(hite)}
+ * @return int cmd color
  */
 int colorInt(char color)
 {
@@ -44,6 +44,15 @@ int colorInt(char color)
     else return 15; 
 }
 
+/**
+ * @brief Plot functions on cmd
+ * 
+ * @param x Abscissa axis
+ * @param y ordonnee axis
+ * @param dataCluster A vector of data
+ * @param title The graph title
+ * @param legend Enable legend display
+ */
 void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend)
 {
     if (system("CLS")) system("clear");
