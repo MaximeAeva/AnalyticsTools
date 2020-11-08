@@ -12,7 +12,7 @@ int main()
     std::vector<Point> toSort;
     std::vector<Point> sorted;
 
-    for(int i = 0; i<10; i++)
+    for(int i = 0; i<30; i++)
     {
         Point pt;
         pt.x = int(10*cos(i));
@@ -20,9 +20,10 @@ int main()
         std::cout << pt.x << " ";
         toSort.push_back(pt);
     }
-    sorted = mergeSort(toSort);
+    float wd[2] = {-5, 5};
+    sorted = sample(toSort, 3, "linear", wd);
     std::cout << std::endl;
-    for(int i = 0; i<10; i++)
+    for(int i = 0; i<sorted.size(); i++)
     {
         std::cout << sorted[i].x << " ";
     }

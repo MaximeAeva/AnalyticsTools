@@ -18,6 +18,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.1.2
+    * Add sample method
 * 0.1.1
     * Add mergeSort algorithm
 * 0.1.0
