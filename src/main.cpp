@@ -21,12 +21,15 @@ int main()
         toSort.push_back(pt);
     }
     float wd[2] = {-5, 5};
-    sorted = sample(toSort, 3, "linear", wd);
+    sorted = sample(toSort, 1, "linear", wd);
     std::cout << std::endl;
     for(int i = 0; i<sorted.size(); i++)
     {
         std::cout << sorted[i].x << " ";
     }
+    std::cout << std::endl;
+    matrixDisplay(prepare(sorted, 4));
+
     x.range[0] = -20;
     x.range[1] = 20;
     x.step = 0.25;

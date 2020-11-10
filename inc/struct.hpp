@@ -42,6 +42,4 @@ struct data{
     char color;
 };
 
-
-
 #endif

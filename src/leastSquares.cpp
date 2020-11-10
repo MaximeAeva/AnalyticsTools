@@ -137,3 +137,30 @@ std::vector<Point> sample(std::vector<Point> f, float freq, char* method, float 
     }
     return h;
 }
+
+/**
+ * @brief Swap abscissa coordinates to matrix like :
+ * 
+ * x1^0 , x1^1, ..., x1^deg
+ * .
+ * .
+ * .
+ * xn^0, . . . . . , xn^deg
+ * 
+ * @param f Data to prepare
+ * @param deg polynomialdegree
+ * @return std::vector<std::vector<float> > 
+ */
+std::vector<std::vector<float> > prepare(std::vector<Point> f, int deg)
+{
+    std::vector<std::vector<float> > m;
+    std::vector<float> row;
+    for(int i = 0; i< f.size(); i++)
+    {
+        row = {};
+        for(int j = 0; j< deg; j++)
+            row.push_back(pow(f[i].x, j));
+        m.push_back(row);
+    }
+    return m;
+}

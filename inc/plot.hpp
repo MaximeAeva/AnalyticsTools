@@ -12,5 +12,6 @@
 
 void plot(Axis x, Axis y, std::vector<data> dataCluster = {}, char* title = "Title", bool legend = false);
 
+void matrixDisplay(std::vector<std::vector<float> > M);
 
 #endif

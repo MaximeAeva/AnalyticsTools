@@ -162,4 +162,22 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
     }
 }
 
+/**
+ * @brief Display Matrices
+ * 
+ * @param M Matrix to display
+ */
+void matrixDisplay(std::vector<std::vector<float> > M)
+{
+    for(int i = 0; i<M.size(); i++)
+    {
+        std::cout << "|";
+        for(int j = 0; j<M[i].size(); j++)
+        {
+            std::cout << M[i][j] << "|";
+        }
+        std::cout << std::endl;
+    }
+}
+
 
