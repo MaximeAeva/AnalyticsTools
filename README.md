@@ -18,6 +18,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.2.0
+    * Matrix class
 * 0.1.2
     * Add sample method
 * 0.1.1

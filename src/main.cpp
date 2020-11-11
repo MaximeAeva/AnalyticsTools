@@ -1,9 +1,26 @@
 #include <iostream>
 #include "plot.hpp"
 #include "leastSquares.hpp"
+#include "matrix.hpp"
 
 int main()
 {
+    Matrix M(3, 3);
+    Matrix R(3, 3);
+    Matrix F(3, 3);
+    M[0][0]=1;
+    M[2][1]=1;
+    M[1][1]=1;
+    M[0][1]=1;
+    M[2][2]=1;
+    M.display();
+    std::cout << std::endl;
+    R = M.rowReduc();
+    R.display();
+    std::cout << std::endl;
+    F = R*M;
+    F.display();
+    std::cout << std::endl;
     Axis x;
     Axis y; 
     data f1;
@@ -28,7 +45,6 @@ int main()
         std::cout << sorted[i].x << " ";
     }
     std::cout << std::endl;
-    matrixDisplay(prepare(sorted, 4));
 
     x.range[0] = -20;
     x.range[1] = 20;

@@ -11,6 +11,4 @@ std::vector<Point> mergeSort(std::vector<Point> f);
 
 std::vector<Point> sample(std::vector<Point> f, float freq, char* method, float wdw [2]);
 
-std::vector<std::vector<float> > prepare(std::vector<Point> f, int deg);
-
 #endif
