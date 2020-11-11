@@ -1,93 +1,60 @@
 #include <iostream>
+#include <ctime>
 #include "plot.hpp"
 #include "leastSquares.hpp"
+#include "signal.hpp"
 #include "matrix.hpp"
 
 int main()
 {
-    Matrix M(3, 3);
-    Matrix R(3, 3);
-    Matrix F(3, 3);
-    M[0][0]=1;
-    M[2][1]=1;
-    M[1][1]=1;
-    M[0][1]=1;
-    M[2][2]=1;
-    M.display();
-    std::cout << std::endl;
-    R = M.rowReduc();
-    R.display();
-    std::cout << std::endl;
-    F = R*M;
-    F.display();
-    std::cout << std::endl;
+    srand(time(NULL));
+
+    
+
     Axis x;
     Axis y; 
     data f1;
     data f2;
-    data f3;
-    std::vector<Point> toSort;
+    std::vector<Point> polyn;
+    std::vector<Point> fit;
     std::vector<Point> sorted;
+    f1.color = 'r';
+    std::vector<float> coeff;
 
-    for(int i = 0; i<30; i++)
-    {
-        Point pt;
-        pt.x = int(10*cos(i));
-        pt.y = 0;
-        std::cout << pt.x << " ";
-        toSort.push_back(pt);
-    }
-    float wd[2] = {-5, 5};
-    sorted = sample(toSort, 1, "linear", wd);
-    std::cout << std::endl;
-    for(int i = 0; i<sorted.size(); i++)
-    {
-        std::cout << sorted[i].x << " ";
-    }
-    std::cout << std::endl;
+    coeff.push_back(0);
+    coeff.push_back(-0.5);
+    coeff.push_back(0.4);
+    coeff.push_back(0.05);
+    coeff.push_back(0.1);
+    coeff.push_back(0.05);
 
-    x.range[0] = -20;
-    x.range[1] = 20;
-    x.step = 0.25;
+    x.range[0] = -8;
+    x.range[1] = 8;
+    x.step = 0.1;
     y.color = x.color = 'b';
-    y.step = 0.25;
-    y.range[0] = -4;
-    y.range[1] = 6;
-    for(int i = -150; i<150; i++)
-    {
-        f1.color = 'v';
-        float k = i*0.1;
-        Point pt;
-        pt.x = k; 
-        pt.y = -5/k;
-        f1.values.push_back(pt);
-        f1.legend = "f1 : 5*sin(x)";
-    }
-    for(int i = -150; i<150; i++)
-    {
-        f2.color = 'g';
-        float k = i*0.1;
-        Point pt;
-        pt.x = k; 
-        pt.y = 5/k;
-        f2.values.push_back(pt);
-        f2.legend = "f2 : 1/x";
-    }
-    for(int i = -150; i<150; i++)
-    {
-        f3.color = 'r';
-        float k = i*0.1;
-        Point pt;
-        pt.x = k; 
-        pt.y = 5*sin(k)/k;;
-        f3.values.push_back(pt);
-        f3.legend = "f3 : sinc(x)";
-    }
+    y.step = 0.5;
+    y.range[0] = -5;
+    y.range[1] = 15;
 
+    float wdw[2] = {-4, 4};
+    int deg = 3;
+    polyn = polynomial(coeff, 100, wdw);
+    Matrix coef(lstSqr(polyn, deg));
+    std::vector<float> coefff;
+    for(int i = 0; i<deg+1; i++) coefff.push_back(coef[i][0]);
+    fit = polynomial(coefff, 200, wdw);
+    float wd[2] = {-1, 1};
+    sorted = sample(polyn, 100, "linear", wd);
+    for(int i = 0; i<polyn.size(); i++)
+        f1.values.push_back(polyn[i]);
+    for(int i = 0; i<fit.size(); i++)
+        f2.values.push_back(fit[i]);
+
+    f1.legend = "Degree 5 polynomial";
+    f2.legend = "Degree 3 fit";
     std::vector<data> dclust;
-    dclust.push_back(f3);
-    //dclust.push_back(f1);
     dclust.push_back(f2);
-    //plot(x, y, dclust, "Hat function", true);
+    dclust.push_back(f1);
+    plot(x, y, dclust, "Degree 3 fit of a degree 5 polynomial", true);
     return 0;
 }

@@ -6,9 +6,9 @@
 #include <iostream>
 
 #include "struct.hpp"
+#include "signal.hpp"
+#include "matrix.hpp"
 
-std::vector<Point> mergeSort(std::vector<Point> f);
-
-std::vector<Point> sample(std::vector<Point> f, float freq, char* method, float wdw [2]);
+Matrix lstSqr(std::vector<Point> f, int deg);
 
 #endif

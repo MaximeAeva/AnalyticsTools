@@ -152,12 +152,15 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
             }
             std::cout << std::endl;
         }
-        for(int dl = 0; dl<dataCluster.size(); dl++)
+        if(legend)
         {
-            SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
-            std::cout << dataCluster[dl].legend;
-            SetConsoleTextAttribute(hConsole, colorInt('w'));
-            std::cout << " / ";
+            for(int dl = 0; dl<dataCluster.size(); dl++)
+            {
+                SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
+                std::cout << dataCluster[dl].legend;
+                SetConsoleTextAttribute(hConsole, colorInt('w'));
+                std::cout << " / ";
+            }
         }
     }
 }

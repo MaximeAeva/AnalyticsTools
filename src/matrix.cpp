@@ -10,14 +10,11 @@ Matrix::Matrix(const int& rows,const int& cols )
 {
     this->n_rows=rows;
     this->n_cols = cols;
-    this->M=new float* [cols];
+    M=new float* [rows];
     for(int i =0;i<rows;i++)
     {
-       this->M[i]=new float[cols];
-    }
-    for(int i=0;i<rows;i++)
-      for(int j=0;j<cols;j++)
-        this->M[i][j]=0;            
+       M[i]=new float[cols]();
+    }           
 }
 
 /**
@@ -29,7 +26,7 @@ Matrix::Matrix(const Matrix& A)
 {
     this->n_rows=getRow(A);
     this->n_cols = getCol(A);
-    this->M=new float* [n_cols];
+    this->M=new float* [n_rows];
     for(int i =0;i<n_rows;i++)
     {
        this->M[i]=new float[n_cols];
@@ -45,9 +42,9 @@ Matrix::Matrix(const Matrix& A)
  */
 Matrix::~Matrix()
 {
-    for(int i =0;i<this->n_rows;i++)
-        delete [] this->M[i]; 
-    delete [] this->M;
+    /*for(int i =0;i<this->n_rows;i++)
+        delete [] M[i]; 
+    delete [] M;*/
 }
 
 /**
@@ -77,7 +74,7 @@ Matrix::Matrix(std::vector<Point> x, int deg)
     
     this->n_rows=x.size();
     this->n_cols = deg;
-    this->M=new float* [deg];
+    this->M=new float* [x.size()];
     for(int i =0;i<x.size();i++)
     {
        this->M[i]=new float[deg];
@@ -180,9 +177,10 @@ Matrix Matrix::operator^(const int& power)
 Matrix Matrix::T() const
 {
     Matrix R(n_cols, n_rows);
-    for(int i=0;i<this->n_cols;i++)
-            for(int j=0;j<this->n_rows;j++)
-                R[i][j]=this->M[j][i];
+    for(int i=0;i<this->n_rows;i++)
+            for(int j=0;j<this->n_cols;j++)
+                R[j][i]=this->M[i][j];
+    return R;
 }
 
 /**
@@ -216,10 +214,12 @@ Matrix Matrix::rowReduc() const
             }
             if(eye[k][j]!=0)
             {
+                float dv = eye[k][j];
                 for(int l = 0; l<n_cols; l++)
                 {
-                    R[k][l]/=eye[k][j];
-                    eye[k][l]/=eye[k][j];
+                    std::cout << l;
+                    R[k][l]/=dv;
+                    eye[k][l]/=dv;
                 }
                 if(k!=r)
                 {
@@ -238,10 +238,11 @@ Matrix Matrix::rowReduc() const
                 {  
                     if(i!=r)
                     {
+                        float ml = eye[i][j];
                         for(int l = 0; l<n_cols; l++)
                         {
-                            R[i][l]-=eye[r][l]*eye[i][j];
-                            eye[i][l]-=eye[r][l]*eye[i][j];
+                            R[i][l]-=R[r][l]*ml;
+                            eye[i][l]-=eye[r][l]*ml;
                         }
                     }
                 }

@@ -18,6 +18,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.3.0
+    * Least Squares
 * 0.2.0
     * Matrix class
 * 0.1.2

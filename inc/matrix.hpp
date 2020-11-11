@@ -19,8 +19,6 @@ class Matrix{
         Matrix operator-(const Matrix& A);
         Matrix operator^(const int& power) ;
         Matrix T() const;
-        Matrix invL() const;
-        Matrix invR() const;
         Matrix rowReduc() const;
         void id();
         void display();
