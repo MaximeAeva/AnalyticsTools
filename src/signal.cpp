@@ -177,3 +177,133 @@ std::vector<Point> polynomial(std::vector<float> coefficients, int n_pts, float 
     }
     return P;
 }
+
+/**
+ * @brief Define a periofic signal from n_pts points in range
+ * wdw with frequencies in harmonic
+ * 
+ * @param harmonic amplitude and frequencies
+ * @param n_pts points count
+ * @param wdw range
+ * @return std::vector<Point> 
+ */
+std::vector<Point> periodic(std::vector<fdata> harmonic, int n_pts, float wdw[2])
+{
+    std::vector<Point> P;
+    std::vector<float> x = linspace(wdw, n_pts);
+    for(int i = 0; i<n_pts; i++)
+    {
+        Point p;
+        p.x = x[i];
+        p.y = 0;
+        for(int k = 0; k<harmonic.size(); k++)
+            p.y += harmonic[k].amp*cos((2*PI*harmonic[k].f*i)+harmonic[k].phi);
+        P.push_back(p);
+    }
+    return P;
+}
+
+/**
+ * @brief Get the mean of the signal
+ * 
+ * @param f 
+ * @return float 
+ */
+float mean(std::vector<Point> f)
+{
+    float m = 0;
+    for(int i = 0; i<f.size(); i++) m+= f[i].y;
+    m/=f.size();
+    return m;
+}
+
+/**
+ * @brief Get the variance of f
+ * 
+ * @param f 
+ * @return float 
+ */
+float var(std::vector<Point> f)
+{
+    float m = mean(f);
+    float v = 0;
+    for(int i = 0; i<f.size(); i++) v+= pow(f[i].y, 2)-m;
+    v/=(f.size()-1);
+    return v;
+}
+
+/**
+ * @brief Normalized tau order covariance 
+ * 
+ * @param tau 
+ * @param f 
+ * @return float 
+ */
+float aCFn(int tau, std::vector<Point> f)
+{
+    float m = mean(f);
+    float v = var(f);
+    float acf = 0;
+    for(int i = 0; i<f.size()-abs(tau)-1; i++) acf += f[i].y*f[i+abs(tau)].y;
+    acf/=f.size()-abs(tau);
+    acf -= pow(m, 2);
+    acf /= v;
+    return acf;
+}
+
+/**
+ * @brief Give the degree deg components of the autoregressive model
+ *  for a WSS signal
+ * 
+ * @param deg 
+ * @param f 
+ * @return Matrix 
+ */
+Matrix AR(int deg, std::vector<Point> f)
+{
+    Matrix AC(deg, deg);
+    Matrix RC(deg, 1);
+    for(int i=0;i<deg;i++)
+    {
+            RC[i] = aCFn(i+1, f);
+        for(int j=0;j<deg;j++)
+            AC[(i*deg)+j]=aCFn(i-j, f);
+    }
+    Matrix ACT(AC.T());
+    Matrix P(ACT*AC);
+    Matrix PINV(P.rowReduc());
+    Matrix ACINV(PINV*ACT);
+    Matrix R(ACINV*RC);
+    return R/R.sum();
+}
+
+/**
+ * @brief Construct n_pts points from the AR regression
+ * 
+ * @param f 
+ * @param coefficients 
+ * @param n_pts 
+ * @param wdw 
+ * @return std::vector<Point> 
+ */
+std::vector<Point> buildAR(std::vector<Point> f, 
+                            std::vector<float> coefficients, int n_pts)
+{
+    std::vector<Point> P;
+    float step = f[1].x-f.front().x;
+    for(int i = coefficients.size()-1; i>=0; i--)
+        P.push_back(f[f.size()-1-i]);
+    for(int k = 0; k<n_pts; k++)
+    {
+        Point p;
+        p.x = P.back().x+step;
+        p.y = 0;
+        for(int i = 0; i<coefficients.size(); i++)
+        {
+            p.y += P[i+k].y*coefficients[coefficients.size()-1-i];
+        }
+        std::cout << p.x << ", " << p.y << std::endl;
+        P.push_back(p);
+    }
+    return P;
+}

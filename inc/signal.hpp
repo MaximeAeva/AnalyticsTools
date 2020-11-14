@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 #include "struct.hpp"
+#include "matrix.hpp"
 
 std::vector<Point> mergeSort(std::vector<Point> f);
 
@@ -16,5 +17,18 @@ std::vector<Point> sample(std::vector<Point> f, int n_pts, char* method, float w
 std::vector<Point> polynomial(std::vector<float> coefficients, int n_pts, float wdw[2]);
 
 std::vector<float> linspace(float wdw[2], int n_pts);
+
+std::vector<Point> periodic(std::vector<fdata> harmonic, int n_pts, float wdw[2]);
+
+float mean(std::vector<Point> f);
+
+float var(std::vector<Point> f);
+
+float aCFn(int tau, std::vector<Point> f);
+
+Matrix AR(int deg, std::vector<Point> f);
+
+std::vector<Point> buildAR(std::vector<Point> f, 
+                            std::vector<float> coefficients, int n_pts);
 
 #endif

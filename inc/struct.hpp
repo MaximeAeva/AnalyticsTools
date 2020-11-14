@@ -1,6 +1,8 @@
 #ifndef STR_H
 #define STR_H
 
+#define PI  3.141592
+
 #include <vector>
 
 /**
@@ -40,6 +42,19 @@ struct data{
     std::vector<Point> values;
     char* legend;
     char color;
+};
+
+/**
+ * @brief data to parse to a frequency build
+ * 
+ * @param f frequency
+ * @param amp Amplitude
+ * @param phi Phasis
+ */
+struct fdata{
+    float f;
+    float amp;
+    float phi;
 };
 
 #endif

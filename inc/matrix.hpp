@@ -18,10 +18,12 @@ class Matrix{
         Matrix operator+(const Matrix& A);
         Matrix operator-(const Matrix& A);
         Matrix operator^(const int& power) ;
+        Matrix operator/(const float& value) ;
         Matrix T() const;
         Matrix rowReduc() const;
         void id();
         void display();
+        float sum();
         inline int getRow(const Matrix& A){return A.n_rows;};
         inline int getCol(const Matrix& A){return A.n_cols;};
     

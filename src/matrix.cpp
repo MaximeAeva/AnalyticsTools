@@ -156,6 +156,21 @@ Matrix Matrix::operator^(const int& power)
 }
 
 /**
+ * @brief Divide by value
+ * 
+ * @param value 
+ * @return Matrix 
+ */
+Matrix Matrix::operator/(const float& value)
+{
+    Matrix R(n_rows, n_cols);
+    for(int i = 0; i<n_rows; i++)
+        for(int j = 0; j<n_cols; j++)
+            R[(i*n_cols)+j] += this->M[(i*n_cols)+j]/value;
+    return R;
+}
+
+/**
  * @brief Transpose
  * 
  * @return Matrix 
@@ -203,7 +218,6 @@ Matrix Matrix::rowReduc() const
                 float dv = eye[(k*n_cols)+j];
                 for(int l = 0; l<n_cols; l++)
                 {
-                    std::cout << l;
                     R[(k*n_cols)+l]/=dv;
                     eye[(k*n_cols)+l]/=dv;
                 }
@@ -237,6 +251,20 @@ Matrix Matrix::rowReduc() const
         }
     }
     return R;
+}
+
+/**
+ * @brief Sum components of a matrix
+ * 
+ * @return float 
+ */
+float Matrix::sum()
+{
+    float s = 0;
+    for(int i = 0; i<n_rows; i++)
+        for(int j = 0; j<n_cols; j++)
+            s += this->M[(i*n_cols)+j];
+    return s;
 }
 
 /**
