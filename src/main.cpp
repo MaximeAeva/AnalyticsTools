@@ -9,7 +9,9 @@ int main()
 {
     srand(time(NULL));
 
-    
+    Matrix k(3, 3);
+    //k[0] = k[4] = k[6] = k[9] = 1;
+    k.display();
 
     Axis x;
     Axis y; 
@@ -37,11 +39,12 @@ int main()
     y.range[1] = 15;
 
     float wdw[2] = {-4, 4};
-    int deg = 3;
+    int deg = 5;
     polyn = polynomial(coeff, 100, wdw);
     Matrix coef(lstSqr(polyn, deg));
     std::vector<float> coefff;
-    for(int i = 0; i<deg+1; i++) coefff.push_back(coef[i][0]);
+    for(int i = 0; i<deg+1; i++) coefff.push_back(coef[i]);
+    
     fit = polynomial(coefff, 200, wdw);
     float wd[2] = {-1, 1};
     sorted = sample(polyn, 100, "linear", wd);
@@ -56,5 +59,6 @@ int main()
     dclust.push_back(f2);
     dclust.push_back(f1);
     plot(x, y, dclust, "Degree 3 fit of a degree 5 polynomial", true);
+    for(int i = 0; i<deg+1; i++) std::cout << coef[i] << " ";
     return 0;
 }

@@ -12,7 +12,7 @@ class Matrix{
         Matrix(const Matrix& A);
         Matrix(std::vector<Point> x, int deg);
         ~Matrix();
-        float* & operator[](const int &index) const ;
+        float & operator[](const int &index) const ;
         void operator=(const Matrix& A );
         Matrix operator*(const Matrix& A);
         Matrix operator+(const Matrix& A);
@@ -26,7 +26,7 @@ class Matrix{
         inline int getCol(const Matrix& A){return A.n_cols;};
     
     private:
-        float** M;
+        float* M;
         int n_rows;
         int n_cols;
 };

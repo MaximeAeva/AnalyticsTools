@@ -10,11 +10,7 @@ Matrix::Matrix(const int& rows,const int& cols )
 {
     this->n_rows=rows;
     this->n_cols = cols;
-    M=new float* [rows];
-    for(int i =0;i<rows;i++)
-    {
-       M[i]=new float[cols]();
-    }           
+    M = new float [rows*cols]();          
 }
 
 /**
@@ -26,14 +22,10 @@ Matrix::Matrix(const Matrix& A)
 {
     this->n_rows=getRow(A);
     this->n_cols = getCol(A);
-    this->M=new float* [n_rows];
-    for(int i =0;i<n_rows;i++)
-    {
-       this->M[i]=new float[n_cols];
-    }
+    this->M=new float [n_rows*n_cols]();
     for(int i=0;i<n_rows;i++)
       for(int j=0;j<n_cols;j++)
-        this->M[i][j]=A[i][j];            
+        this->M[(i*n_cols)+j]=A[(i*n_cols)+j];            
 }
 
 /**
@@ -42,9 +34,7 @@ Matrix::Matrix(const Matrix& A)
  */
 Matrix::~Matrix()
 {
-    /*for(int i =0;i<this->n_rows;i++)
-        delete [] M[i]; 
-    delete [] M;*/
+    delete [] M;
 }
 
 /**
@@ -54,7 +44,7 @@ Matrix::~Matrix()
 void Matrix::id()
 {
     if(n_rows==n_cols)
-        for(int i=0;i<n_rows;i++) this->M[i][i]++;
+        for(int i=0;i<n_rows;i++) this->M[(i*n_cols)+i]++;
 }
 
 /**
@@ -74,14 +64,10 @@ Matrix::Matrix(std::vector<Point> x, int deg)
     
     this->n_rows=x.size();
     this->n_cols = deg;
-    this->M=new float* [x.size()];
-    for(int i =0;i<x.size();i++)
-    {
-       this->M[i]=new float[deg];
-    }
+    this->M=new float [x.size()*deg]();
     for(int i=0;i<x.size();i++)
       for(int j=0;j<deg;j++)
-        this->M[i][j]=pow(x[i].x, j); 
+        this->M[(i*n_cols)+j]=pow(x[i].x, j); 
 }
 
 /**
@@ -90,7 +76,7 @@ Matrix::Matrix(std::vector<Point> x, int deg)
  * @param index index to access
  * @return float*& 
  */
-float* & Matrix::operator[](const int &index) const
+float & Matrix::operator[](const int &index) const
 {
   return  this->M[index];
 }
@@ -106,7 +92,7 @@ void Matrix::operator=(const Matrix& A)
     {
         for(int i=0;i<this->n_rows;i++)
             for(int j=0;j<this->n_cols;j++)
-                this->M[i][j]=A[i][j]; 
+                this->M[(i*n_cols)+j]=A[(i*n_cols)+j]; 
     }
 }
 
@@ -124,7 +110,7 @@ Matrix Matrix::operator*(const Matrix& A)
         for(int i=0;i<this->n_rows;i++)
             for(int j=0;j<this->getCol(A);j++)
                 for(int k = 0; k<n_cols; k++)
-                    R[i][j]+=this->M[i][k]*A[k][j]; 
+                    R[(i*getCol(A))+j]+=this->M[(i*n_cols)+k]*A[(k*getCol(A))+j]; 
     }
     return R;
 }
@@ -142,7 +128,7 @@ Matrix Matrix::operator+(const Matrix& A)
     {   
         for(int i=0;i<this->n_rows;i++)
             for(int j=0;j<this->n_cols;j++)
-                R[i][j]=this->M[i][j]+A[i][j]; 
+                R[(i*n_cols)+j]=this->M[(i*n_cols)+j]+A[(i*n_cols)+j]; 
     }
     return R;
 }
@@ -160,7 +146,7 @@ Matrix Matrix::operator-(const Matrix& A)
         Matrix R(n_rows, n_cols);
         for(int i=0;i<this->n_rows;i++)
             for(int j=0;j<this->n_cols;j++)
-                R[i][j]=this->M[i][j]-A[i][j]; 
+                R[(i*n_cols)+j]=this->M[(i*n_cols)+j]-A[(i*n_cols)+j]; 
     }
 }
 
@@ -179,7 +165,7 @@ Matrix Matrix::T() const
     Matrix R(n_cols, n_rows);
     for(int i=0;i<this->n_rows;i++)
             for(int j=0;j<this->n_cols;j++)
-                R[j][i]=this->M[i][j];
+                R[(j*n_rows)+i]=this->M[(i*n_cols)+j];
     return R;
 }
 
@@ -197,52 +183,52 @@ Matrix Matrix::rowReduc() const
     {   
         for(int i=0;i<n_rows;i++)
             for(int j=0;j<n_cols;j++)
-                eye[i][j]=this->M[i][j];
+                eye[(i*n_cols)+j]=this->M[(i*n_cols)+j];
         
         int r = 0;
         for(int j = 0; j<n_cols; j++)
         {
-            float max = abs(eye[r][j]);
+            float max = abs(eye[(r*n_cols)+j]);
             int k = r;
             for(int l = r; l<n_cols; l++)
             {
-                if(abs(eye[l][j])>max)
+                if(abs(eye[(l*n_cols)+j])>max)
                 {
-                    max = abs(eye[l][j]);
+                    max = abs(eye[(l*n_cols)+j]);
                     k = l; 
                 }
             }
-            if(eye[k][j]!=0)
+            if(eye[(k*n_cols)+j]!=0)
             {
-                float dv = eye[k][j];
+                float dv = eye[(k*n_cols)+j];
                 for(int l = 0; l<n_cols; l++)
                 {
                     std::cout << l;
-                    R[k][l]/=dv;
-                    eye[k][l]/=dv;
+                    R[(k*n_cols)+l]/=dv;
+                    eye[(k*n_cols)+l]/=dv;
                 }
                 if(k!=r)
                 {
                     float c;
                     for(int l = 0; l<n_cols; l++)
                     {
-                        c = eye[k][l];
-                        eye[k][l] = eye[r][l];
-                        eye[r][l] = c;
-                        c = R[k][l];
-                        R[k][l] = R[r][l];
-                        R[r][l] = c;
+                        c = eye[(k*n_cols)+l];
+                        eye[(k*n_cols)+l] = eye[(r*n_cols)+l];
+                        eye[(r*n_cols)+l] = c;
+                        c = R[(k*n_cols)+l];
+                        R[(k*n_cols)+l] = R[(r*n_cols)+l];
+                        R[(r*n_cols)+l] = c;
                     }
                 }
                 for(int i = 0; i<n_rows; i++)
                 {  
                     if(i!=r)
                     {
-                        float ml = eye[i][j];
+                        float ml = eye[(i*n_cols)+j];
                         for(int l = 0; l<n_cols; l++)
                         {
-                            R[i][l]-=R[r][l]*ml;
-                            eye[i][l]-=eye[r][l]*ml;
+                            R[(i*n_cols)+l]-=R[(r*n_cols)+l]*ml;
+                            eye[(i*n_cols)+l]-=eye[(r*n_cols)+l]*ml;
                         }
                     }
                 }
@@ -264,7 +250,7 @@ void Matrix::display()
         std::cout << "|";
         for(int j = 0; j<this->n_cols; j++)
         {
-            std::cout << this->M[i][j] << "|";
+            std::cout << this->M[(i*n_cols)+j] << "|";
         }
         std::cout << std::endl;
     }
