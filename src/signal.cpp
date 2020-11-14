@@ -269,12 +269,9 @@ Matrix AR(int deg, std::vector<Point> f)
         for(int j=0;j<deg;j++)
             AC[(i*deg)+j]=aCFn(i-j, f);
     }
-    Matrix ACT(AC.T());
-    Matrix P(ACT*AC);
-    Matrix PINV(P.rowReduc());
-    Matrix ACINV(PINV*ACT);
+    Matrix ACINV(AC.rowReduc());
     Matrix R(ACINV*RC);
-    return R/R.sum();
+    return R;
 }
 
 /**

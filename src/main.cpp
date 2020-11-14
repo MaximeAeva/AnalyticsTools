@@ -21,10 +21,10 @@ int main()
     std::vector<fdata> coeff;
 
     fdata freq;
-    freq.amp = 3; freq.f = 0.005; freq.phi = -2;
-    /*fdata freqq;
-    freqq.amp = 1; freqq.f = 0.025; freqq.phi = 4;
-    coeff.push_back(freqq);*/
+    freq.amp = 2; freq.f = 0.01; freq.phi = -2;
+    fdata freqq;
+    freqq.amp = 1.5; freqq.f = 0.015; freqq.phi = 4;
+    coeff.push_back(freqq);
     coeff.push_back(freq);
 
     x.range[0] = -8;
@@ -35,17 +35,17 @@ int main()
     y.range[0] = -5;
     y.range[1] = 5;
 
-    float wdw[2] = {-8, 5};
+    float wdw[2] = {-8, 0};
     float wdww[2] = {-5, 5};
-    int deg = 5;
-    polyn = periodic(coeff, 800, wdw);
+    int deg = 200;
+    polyn = periodic(coeff, 500, wdw);
     Matrix k(AR(deg, polyn));
     Matrix coef(lstSqr(polyn, deg));
     std::vector<float> coefff;
     std::vector<float> coeffar;
     for(int i = 0; i<deg; i++) coeffar.push_back(k[i]);
     for(int i = 0; i<deg+1; i++) coefff.push_back(coef[i]);
-    f3.values = buildAR(polyn, coeffar, 200);
+    f3.values = buildAR(polyn, coeffar, 500);
     fit = polynomial(coefff, 200, wdw);
     float wd[2] = {-1, 1};
     sorted = sample(polyn, 100, "linear", wd);
@@ -54,17 +54,17 @@ int main()
     for(int i = 0; i<fit.size(); i++)
         f2.values.push_back(fit[i]);
 
-    f1.legend = "Degree 5 polynomial";
+    f1.legend = "Original Signal";
     //f2.legend = "Degree 3 fit";
-    f3.legend = "test AR";
+    f3.legend = "AR prediction";
     f3.color = 'g';
     std::vector<data> dclust;
-    dclust.push_back(f3);
     dclust.push_back(f1);
-    plot(x, y, dclust, "Degree 3 fit of a degree 5 polynomial", true);
+    dclust.push_back(f3);
+    plot(x, y, dclust, "AR prediction of a WSS signal", true);
 
     
-    k.display();
+    //k.display();
     //std::cout << f3.values.size();
     return 0;
 }

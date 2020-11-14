@@ -4,6 +4,7 @@
 Will contains least squares, plot, AR, MA, sampling, Fourier series ...
 
 ![Hey!](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello.PNG)
+![Hey!](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello2.PNG)
 
 ## Installation
 
@@ -18,6 +19,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.3.1
+    * Autoregressive model
 * 0.3.0
     * Least Squares
 * 0.2.0
