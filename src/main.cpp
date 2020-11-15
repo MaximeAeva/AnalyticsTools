@@ -15,17 +15,17 @@ int main()
     data f2;
     data f3;
     std::vector<Point> polyn;
-    std::vector<Point> fit;
-    std::vector<Point> sorted;
     f1.color = 'r';
-    std::vector<fdata> coeff;
+    std::vector<float> coeff;
+    std::vector<float> coefff;
+    std::vector<float> coefT;
 
-    fdata freq;
-    freq.amp = 2; freq.f = 0.01; freq.phi = -2;
-    fdata freqq;
-    freqq.amp = 1.5; freqq.f = 0.015; freqq.phi = 4;
-    coeff.push_back(freqq);
-    coeff.push_back(freq);
+    coeff.push_back(0.1);
+    coeff.push_back(0.3);
+    coeff.push_back(0.2);
+    coeff.push_back(0.05);
+    coeff.push_back(0.15);
+    coeff.push_back(0.1);
 
     x.range[0] = -8;
     x.range[1] = 8;
@@ -35,36 +35,26 @@ int main()
     y.range[0] = -5;
     y.range[1] = 5;
 
-    float wdw[2] = {-8, 0};
-    float wdww[2] = {-5, 5};
-    int deg = 200;
-    polyn = periodic(coeff, 500, wdw);
-    Matrix k(AR(deg, polyn));
+    float wdw[2] = {-3, 3};
+    int deg = 3;
+    polyn = polynomial(coeff, 1000, wdw);
     Matrix coef(lstSqr(polyn, deg));
-    std::vector<float> coefff;
-    std::vector<float> coeffar;
-    for(int i = 0; i<deg; i++) coeffar.push_back(k[i]);
     for(int i = 0; i<deg+1; i++) coefff.push_back(coef[i]);
-    f3.values = buildAR(polyn, coeffar, 500);
-    fit = polynomial(coefff, 200, wdw);
-    float wd[2] = {-1, 1};
-    sorted = sample(polyn, 100, "linear", wd);
-    for(int i = 0; i<polyn.size(); i++)
-        f1.values.push_back(polyn[i]);
-    for(int i = 0; i<fit.size(); i++)
-        f2.values.push_back(fit[i]);
 
+    f1.values = polyn;
+    f3.values = polynomial(coefff, 1000, wdw);
+    
+    f2.values = polynomial(tangent(f3.values, 0.3), 200, wdw, 0.3);
+    f2.legend = "derivative";
     f1.legend = "Original Signal";
-    //f2.legend = "Degree 3 fit";
-    f3.legend = "AR prediction";
+    f3.legend = "fit";
     f3.color = 'g';
     std::vector<data> dclust;
-    dclust.push_back(f1);
     dclust.push_back(f3);
-    plot(x, y, dclust, "AR prediction of a WSS signal", true);
+    dclust.push_back(f1);
+    dclust.push_back(f2);
+    plot(x, y, dclust, "fit and tangent", true);
 
-    
-    //k.display();
-    //std::cout << f3.values.size();
+
     return 0;
 }

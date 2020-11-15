@@ -162,7 +162,8 @@ std::vector<float> linspace(float wdw[2], int n_pts)
  * @param wdw range
  * @return std::vector<Point> 
  */
-std::vector<Point> polynomial(std::vector<float> coefficients, int n_pts, float wdw[2])
+std::vector<Point> polynomial(std::vector<float> coefficients, 
+                            int n_pts, float wdw[2], float xShift)
 {
     std::vector<Point> P;
     std::vector<float> x = linspace(wdw, n_pts);
@@ -172,7 +173,7 @@ std::vector<Point> polynomial(std::vector<float> coefficients, int n_pts, float 
         p.x = x[i];
         p.y = 0;
         for(int k = 0; k<coefficients.size(); k++)
-            p.y+= coefficients[k]*pow(p.x, k);
+            p.y+= coefficients[k]*pow(p.x-xShift, k);
         P.push_back(p);
     }
     return P;
@@ -299,8 +300,45 @@ std::vector<Point> buildAR(std::vector<Point> f,
         {
             p.y += P[i+k].y*coefficients[coefficients.size()-1-i];
         }
-        std::cout << p.x << ", " << p.y << std::endl;
         P.push_back(p);
     }
     return P;
+}
+
+/**
+ * @brief Give the derivative from f
+ * 
+ * @param f 
+ * @return std::vector<Point> 
+ */
+std::vector<Point> differentiation(std::vector<Point> f)
+{
+    std::vector<Point> P;
+    for(int i = 0; i<f.size()-1; i++)
+    {
+        Point p;
+        p.x = f[i].x + (f[i+1].x-f[i].x)/2;
+        p.y = (f[i+1].y-f[i].y)/(f[i+1].x-f[i].x);
+        P.push_back(p);
+    }
+    return P;
+}
+
+/**
+ * @brief Give the tangeante in abscissa parameters
+ * 
+ * @param f 
+ * @param abscissa 
+ * @return std::vector<float> 
+ */
+std::vector<float> tangent(std::vector<Point> f, float abscissa)
+{
+    int i = 0;
+    while(f[i].x<abscissa) i++;
+    float fpa = (f[i+1].y-f[i].y)/(f[i+1].x-f[i].x);
+    float fa = fpa*(abscissa-f[i-1].x)+f[i-1].y;
+    std::vector<float> P; 
+    P.push_back(fa);
+    P.push_back(fpa); 
+    return P; 
 }
