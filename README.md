@@ -19,6 +19,10 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.4.0
+    * Moving average, gaussian nois, Box Muller
+* 0.3.2
+    * Chebychev nodes, tangent, differentiation
 * 0.3.1
     * Autoregressive model
 * 0.3.0

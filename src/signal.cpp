@@ -342,3 +342,81 @@ std::vector<float> tangent(std::vector<Point> f, float abscissa)
     P.push_back(fpa); 
     return P; 
 }
+
+/**
+ * @brief Give optimized points to fit while avoiding Runge-Kutta effect
+ * 
+ * @param f function to fit
+ * @param deg degree of the fit polynomial
+ * @return std::vector<Point> 
+ */
+std::vector<Point> chebychevNodes(std::vector<Point> f, int deg)
+{
+    std::vector<Point> P;
+    float a = f.front().x;
+    float b = f.back().x;
+    for(int k = 1; k<deg+2; k++)
+    {
+        Point p;
+        p.x = (0.5*(a+b))+(0.5*(b-a)*cos(PI*((2*k)-1)/(2*(deg+1))));
+        p.y = tangent(f, p.x).front();
+        P.push_back(p);
+    }
+    return P;
+}
+
+/**
+ * @brief Give the order deg unshift moving average
+ * 
+ * @param f 
+ * @param deg 
+ * @return std::vector<Point> 
+ */
+std::vector<Point> centralMovingAverage(std::vector<Point> f, int deg)
+{
+    std::vector<Point> P;
+    for(int i = 0; i<f.size()-(deg-1); i++)
+    {
+        Point p;
+        p.x = (f[i+deg].x+f[i].x)/2;
+        p.y = 0;
+        for(int k = 0; k<deg; k++)
+            p.y += f[i+k].y;
+        p.y /= deg;
+        P.push_back(p);
+    }
+    return P;
+}
+
+/**
+ * @brief Add gaussian noise to a signal
+ * 
+ * @param f signal
+ * @param mu Noise's mean
+ * @param sigma Noise's standard deviation
+ * @param yNoise Enable abscissa noise (default: false)
+ * @return std::vector<Point> 
+ */
+std::vector<Point> gaussianNoise(std::vector<Point> f, float mu, float sigma, bool yNoise)
+{
+    std::vector<Point> P;
+    P = f;
+    for(int i = 0; i<f.size(); i++) P[i].y += boxMuller(mu, sigma);
+    if(yNoise) for(int i = 0; i<f.size(); i++) P[i].x += boxMuller(mu, sigma);
+    return P;
+}
+
+/**
+ * @brief Transform uniform distribution to gaussian
+ * 
+ * @param mu 
+ * @param sigma 
+ * @return float 
+ */
+float boxMuller(float mu, float sigma)
+{
+    float a = (rand() % 100 + 0.001)/100;
+    float b = (rand() % 100 + 0.001)/100;
+
+    return (sqrt(-2*log(a))*cos(2*PI*b))*sigma + mu;
+}
