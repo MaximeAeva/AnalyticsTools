@@ -35,8 +35,6 @@ std::vector<Point> differentiation(std::vector<Point> f);
 
 std::vector<float> tangent(std::vector<Point> f, float abscissa);
 
-std::vector<Point> chebychevNodes(std::vector<Point> f, int deg);
-
 std::vector<Point> centralMovingAverage(std::vector<Point> f, int deg);
 
 std::vector<Point> gaussianNoise(std::vector<Point> f, float mu, float sigma, bool yNoise = false);

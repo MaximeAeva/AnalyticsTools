@@ -12,7 +12,8 @@ PROJ_SRC_LIST = main.cpp \
 				plot.cpp \
 				leastSquares.cpp \
 				matrix.cpp \
-				signal.cpp
+				signal.cpp \
+				interpolation.cpp
 
 # objects
 PROJ_OBJ_LIST = $(PROJ_SRC_LIST:.cpp=.o)

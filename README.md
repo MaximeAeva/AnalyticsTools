@@ -19,6 +19,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.4.1
+    * Lagrangian interpolation
 * 0.4.0
     * Moving average, gaussian nois, Box Muller
 * 0.3.2

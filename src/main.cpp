@@ -4,6 +4,7 @@
 #include "leastSquares.hpp"
 #include "signal.hpp"
 #include "matrix.hpp"
+#include "interpolation.hpp"
 
 int main()
 {
@@ -21,7 +22,6 @@ int main()
     std::vector<float> coefT;
 
     coeff.push_back(0);
-    coeff.push_back(0.5);
 
     x.range[0] = -8;
     x.range[1] = 8;
@@ -32,26 +32,22 @@ int main()
     y.range[1] = 5;
 
     float wdw[2] = {-8, 8};
+    float wdww[2] = {-5, 5};
     int deg = 10;
-    polyn = gaussianNoise(polynomial(coeff, 200, wdw), 0, 1, false);
-    Matrix coef(lstSqr(polyn, deg));
-    Matrix coeffT(lstSqr(chebychevNodes(polyn, deg), deg));
-    for(int i = 0; i<deg+1; i++) coefff.push_back(coef[i]);
-    for(int i = 0; i<deg+1; i++) coefT.push_back(coeffT[i]);
+    polyn = gaussianNoise(polynomial(coeff, 40, wdw), 0, 1, false);
+    f2.values = lagrangeInterp(polyn, linspace(wdw, 10000));
+    f3.values = lagrangeInterp(chebychevNodes(polyn, 40), linspace(wdw, 1000));
 
     f1.values = polyn;
-    f3.values = polynomial(coefff, 200, wdw);
-    
-    f2.values = centralMovingAverage(polyn, 10);
-    f2.legend = "derivative";
+    f2.legend = "Lagrange interpolation";
     f1.legend = "Original Signal";
-    f3.legend = "fit";
+    f3.legend = "Chebychev Nodes";
     f3.color = 'g';
     std::vector<data> dclust;
-    dclust.push_back(f2);
     dclust.push_back(f1);
-    //dclust.push_back(f3);
-    plot(x, y, dclust, "fit and tangent", true);
+    dclust.push_back(f3);
+    dclust.push_back(f2);
+    plot(x, y, dclust, "Runge Kutta phenomenon", true);
 
     return 0;
 }
