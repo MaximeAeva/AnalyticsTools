@@ -47,7 +47,7 @@ int main()
     polyn = gaussianNoise(polynomial(coeff, 1000, wdw), 0, 3, false);
     f2.values = periodic(freq, 500, wdw);
     f3.values = PSD(f2.values);
-
+    f3.style = '\0';
     f1.values = polyn;
     f2.legend = "Lagrange interpolation";
     f1.legend = "Original Signal";

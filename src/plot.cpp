@@ -111,7 +111,8 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
                             && (std::abs(dataCluster[dl].values[i].y-crtPos.y)<std::abs(y.step/2)))
                             {
                             SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
-                            std::cout << "+";
+                            if(dataCluster[dl].style == '\0') std::cout << dataCluster[dl].values[i].y;
+                            else std::cout << dataCluster[dl].style;
                             SetConsoleTextAttribute(hConsole, colorInt('w'));
                             isVal = true;
                             break;  
