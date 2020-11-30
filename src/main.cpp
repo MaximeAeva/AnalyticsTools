@@ -21,22 +21,32 @@ int main()
     std::vector<float> coefff;
     std::vector<float> coefT;
 
+    std::vector<fdata> freq;
+    fdata ff = {0.5, 8, 0};
+    fdata fff = {0.2, 1, 0};
+    fdata ffff = {0.1, 0.5, 0};
+    fdata fffff = {0.005, 0.7, 0};
+    //freq.push_back(ff);
+    freq.push_back(fff);
+    freq.push_back(ffff);
+    //freq.push_back(fffff);
+
     coeff.push_back(0);
 
-    x.range[0] = -8;
-    x.range[1] = 8;
-    x.step = 0.1;
+    x.range[0] = -50;
+    x.range[1] = 50;
+    x.step = 0.8;
     y.color = x.color = 'b';
-    y.step = 0.25;
-    y.range[0] = -5;
-    y.range[1] = 5;
+    y.step = 0.05;
+    y.range[0] = -1;
+    y.range[1] = 1;
 
-    float wdw[2] = {-8, 8};
+    float wdw[2] = {-4, 4};
     float wdww[2] = {-5, 5};
     int deg = 10;
-    polyn = gaussianNoise(polynomial(coeff, 40, wdw), 0, 1, false);
-    f2.values = lagrangeInterp(polyn, linspace(wdw, 10000));
-    f3.values = lagrangeInterp(chebychevNodes(polyn, 40), linspace(wdw, 1000));
+    polyn = gaussianNoise(polynomial(coeff, 1000, wdw), 0, 3, false);
+    f2.values = periodic(freq, 500, wdw);
+    f3.values = PSD(f2.values);
 
     f1.values = polyn;
     f2.legend = "Lagrange interpolation";
@@ -44,10 +54,9 @@ int main()
     f3.legend = "Chebychev Nodes";
     f3.color = 'g';
     std::vector<data> dclust;
-    dclust.push_back(f1);
+    //dclust.push_back(f1);
     dclust.push_back(f3);
     dclust.push_back(f2);
     plot(x, y, dclust, "Runge Kutta phenomenon", true);
-
     return 0;
 }

@@ -9,6 +9,6 @@
 #include "signal.hpp"
 #include "matrix.hpp"
 
-Matrix lstSqr(std::vector<Point> f, int deg);
+Matrix<float> lstSqr(std::vector<Point> f, int deg);
 
 #endif

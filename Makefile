@@ -11,7 +11,6 @@ OBJ_DIR =       obj
 PROJ_SRC_LIST = main.cpp \
 				plot.cpp \
 				leastSquares.cpp \
-				matrix.cpp \
 				signal.cpp \
 				interpolation.cpp
 

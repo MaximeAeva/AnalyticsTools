@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <cstdlib>
+#include <complex>
 
 #include "struct.hpp"
 #include "matrix.hpp"
@@ -26,7 +27,7 @@ float var(std::vector<Point> f);
 
 float aCFn(int tau, std::vector<Point> f);
 
-Matrix AR(int deg, std::vector<Point> f);
+Matrix<float> AR(int deg, std::vector<Point> f);
 
 std::vector<Point> buildAR(std::vector<Point> f, 
                             std::vector<float> coefficients, int n_pts);
@@ -40,5 +41,9 @@ std::vector<Point> centralMovingAverage(std::vector<Point> f, int deg);
 std::vector<Point> gaussianNoise(std::vector<Point> f, float mu, float sigma, bool yNoise = false);
 
 float boxMuller(float mu, float sigma);
+
+Matrix<std::complex<float> > DFT(std::vector<Point> f);
+
+std::vector<Point> PSD(std::vector<Point> f);
 
 #endif

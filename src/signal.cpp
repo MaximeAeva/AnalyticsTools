@@ -260,18 +260,18 @@ float aCFn(int tau, std::vector<Point> f)
  * @param f 
  * @return Matrix 
  */
-Matrix AR(int deg, std::vector<Point> f)
+Matrix<float> AR(int deg, std::vector<Point> f)
 {
-    Matrix AC(deg, deg);
-    Matrix RC(deg, 1);
+    Matrix<float> AC(deg, deg);
+    Matrix<float> RC(deg, 1);
     for(int i=0;i<deg;i++)
     {
             RC[i] = aCFn(i+1, f);
         for(int j=0;j<deg;j++)
             AC[(i*deg)+j]=aCFn(i-j, f);
     }
-    Matrix ACINV(AC.rowReduc());
-    Matrix R(ACINV*RC);
+    Matrix<float> ACINV(AC.rowReduc());
+    Matrix<float> R(ACINV*RC);
     return R;
 }
 
@@ -397,4 +397,50 @@ float boxMuller(float mu, float sigma)
     float b = (rand() % 100 + 0.001)/100;
 
     return (sqrt(-2*log(a))*cos(2*PI*b))*sigma + mu;
+}
+
+/**
+ * @brief Discrete Fourier Transform
+ * 
+ * @param f function
+ * @return Matrix<std::complex<float> > 
+ */
+Matrix<std::complex<float> > DFT(std::vector<Point> f)
+{
+    int n = f.size();
+    std::complex<double> i(0, 1);
+    std::complex<double> w = pow(exp(i), ((-2)*PI)/n);
+    Matrix<std::complex<float> > M(f.size(), f.size());
+    Matrix<std::complex<float> > X(f.size(), 1);
+    for(int l = 0; l<n; l++)
+    {
+        X[l] = f[l].y;
+        for(int j = 0; j<n; j++)
+        {
+            M[l*n+j] = pow(w, l*j);
+        }
+    }
+    return M*X;
+}
+
+/**
+ * @brief Power Spectral Density
+ * 
+ * @param f function
+ * @return std::vector<Point> 
+ */
+std::vector<Point> PSD(std::vector<Point> f)
+{
+    Matrix<std::complex<float> > M = DFT(f);
+    std::vector<Point> P;
+    int N = f.size();
+    float fe = N/(f.back().x-f.front().x);
+    for(int i = 0; i<f.size(); i++)
+    {
+        Point p;
+        p.x = i*(fe/N)-(fe/2);
+        p.y = abs(M[f.size()-1-i])/(N/2);
+        P.push_back(p);
+    }
+    return P;
 }

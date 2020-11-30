@@ -7,15 +7,15 @@
  * @param deg degree of the fit
  * @return Matrix 
  */
-Matrix lstSqr(std::vector<Point> f, int deg)
+Matrix<float> lstSqr(std::vector<Point> f, int deg)
 {
-    Matrix X(f, deg+1);
-    Matrix Y(f.size(), 1);
+    Matrix<float> X(f, deg+1);
+    Matrix<float> Y(f.size(), 1);
     for(int i = 0; i<f.size(); i++) Y[i] = f[i].y;  
-    Matrix XT(X.T());
-    Matrix P(XT*X);
-    Matrix PINV(P.rowReduc());
-    Matrix XINV(PINV*XT);
-    Matrix A(XINV*Y);
+    Matrix<float> XT(X.Trsp());
+    Matrix<float> P(XT*X);
+    Matrix<float> PINV(P.rowReduc());
+    Matrix<float> XINV(PINV*XT);
+    Matrix<float> A(XINV*Y);
     return A;
 }
