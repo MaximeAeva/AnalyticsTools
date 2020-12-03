@@ -1,41 +1,40 @@
 # Welcome to docs
-=========================================================================
 
 ## Table of content
 
-    * Basic structures
-    * Plot
-    * Matrix
-    * Functions
+* Basic structures
+* Plot
+* Matrix
+* Functions
 
 -------------------------------------------------------------------------
 
 # Basic structures
 
 ## Axis
-    Provide information related to axis forwarded to plot
-        * float range[2]
-        * float step = 1
-        * char color
-        * char* title
+Provide information related to axis forwarded to plot
+* float range[2]
+* float step = 1
+* char color
+* char* title
 
 ## Point
-    Provide an easy alternative to std::pair 
-        * float x
-        * float y
+Provide an easy alternative to std::pair 
+* float x
+* float y
 
 ## data
-    Everything about a set of data
-        * std::vector<Point> values
-        * char* legend
-        * char color
-        * char style
+Everything about a set of data
+* std::vector<Point> values
+* char* legend
+* char color
+* char style
 
 ## fdata
-    Provide a way to describe harmonic of a periodic signal
-        * float f
-        * float amp
-        * float phi
+Provide a way to describe harmonic of a periodic signal
+* float f
+* float amp
+* float phi
 
 -------------------------------------------------------------------------
 
@@ -75,37 +74,37 @@
 
 ## More About
 ### Constructors
-    * Basic
-        Matrix(const int& rows, const int& cols)
-    * Copy 
-        Matrix(const Matrix<T>& A)
-    * To VanderMonde (optimized for LS)
-        Matrix(std::vector<Point> x, int deg)
+* Basic
+    Matrix(const int& rows, const int& cols)
+* Copy 
+    Matrix(const Matrix<T>& A)
+* To VanderMonde (optimized for LS)
+    Matrix(std::vector<Point> x, int deg)
 
 ### Operators
-    * Element access
-        T & operator[](const int &index) const 
-    * Copy
-        void operator=(const Matrix<T>& A )
-    * Matrix multiplication
-        Matrix<T> operator*(const Matrix<T>& A)
-    * Matrix term to term addition
-        Matrix<T> operator+(const Matrix<T>& A)
-    * Matrix term to term diff
-        Matrix<T> operator-(const Matrix<T>& A)
-    * Matrix power
-        Matrix<T> operator^(const int& power) 
-    * Matrix divide by a T value
-        Matrix<T> operator/(const T& value) 
+* Element access
+    T & operator[](const int &index) const 
+* Copy
+    void operator=(const Matrix<T>& A )
+* Matrix multiplication
+    Matrix<T> operator*(const Matrix<T>& A)
+* Matrix term to term addition
+    Matrix<T> operator+(const Matrix<T>& A)
+* Matrix term to term diff
+    Matrix<T> operator-(const Matrix<T>& A)
+* Matrix power
+    Matrix<T> operator^(const int& power) 
+* Matrix divide by a T value
+    Matrix<T> operator/(const T& value) 
 
 ### Functions
-    * Transpose
-        Matrix<T> Trsp() const
-    * Give the inverse of a square matrix
-        Matrix<T> rowReduc() const
-    * Transform to identity matrix
-        void id()
-    * A way to check values
-        void display()
-    * Sum all the components
-        T sum()
+* Transpose
+    Matrix<T> Trsp() const
+* Give the inverse of a square matrix
+    Matrix<T> rowReduc() const
+* Transform to identity matrix
+    void id()
+* A way to check values
+    void display()
+* Sum all the components
+    T sum()

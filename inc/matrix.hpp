@@ -339,13 +339,16 @@ void Matrix<T>::display()
         std::cout << "|";
         for(int j = 0; j<this->n_cols; j++)
         {
+            int k = 0;
             std::ostringstream s;
             s << M[(i*n_cols)+j];
+            if((m-s.str().length())%2) k++;
+            for(int l = 0; l<(m-s.str().length())/2; l++) std::cout << " ";
             std::cout << M[(i*n_cols)+j];
-            for(int l = 0; l<m-s.str().length(); l++) std::cout << " ";
+            for(int l = 0; l<(m-s.str().length())/2+k; l++) std::cout << " ";
             std::cout << "|";
         }
-        std::cout << std::endl;
+        std::cout << std::endl << std::endl;
     }
 }
 
