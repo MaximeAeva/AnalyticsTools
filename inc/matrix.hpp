@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include "struct.hpp"
 
 template <class T>
@@ -323,12 +324,26 @@ T Matrix<T>::sum()
 template <class T>
 void Matrix<T>::display()
 {
+    int m = 0;
+    for(int i = 0; i<this->n_rows; i++)
+    {
+        for(int j = 0; j<this->n_cols; j++)
+        {
+            std::ostringstream s;
+            s << M[(i*n_cols)+j];
+            if(s.str().length() > m) m = s.str().length();
+        }
+    }
     for(int i = 0; i<this->n_rows; i++)
     {
         std::cout << "|";
         for(int j = 0; j<this->n_cols; j++)
         {
-            std::cout << this->M[(i*n_cols)+j] << "|";
+            std::ostringstream s;
+            s << M[(i*n_cols)+j];
+            std::cout << M[(i*n_cols)+j];
+            for(int l = 0; l<m-s.str().length(); l++) std::cout << " ";
+            std::cout << "|";
         }
         std::cout << std::endl;
     }

@@ -46,7 +46,7 @@ int main()
     float wdww[2] = {-5, 5};
     int deg = 10;
     polyn = gaussianNoise(polynomial(coeff, 1000, wdw), 0, 3, false);
-    f2.values = periodic(freq, 500, wdw);
+    f2.values = periodic(freq, 5, wdw);
     f3.values = PSD(f2.values);
     f3.style = '\0';
     f1.values = polyn;
@@ -58,6 +58,6 @@ int main()
     //dclust.push_back(f1);
     dclust.push_back(f3);
     //dclust.push_back(f2);
-    plot(x, y, dclust, "Fourier transform of a 2 harmonic signal", true);
+    //plot(x, y, dclust, "Fourier transform of a 2 harmonic signal", true);
     return 0;
 }

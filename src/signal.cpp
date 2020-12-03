@@ -420,6 +420,8 @@ Matrix<std::complex<float> > DFT(std::vector<Point> f)
             M[l*n+j] = pow(w, l*j);
         }
     }
+    std::cout << std::endl;
+    M.display();
     return M*X;
 }
 
