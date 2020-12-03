@@ -40,8 +40,8 @@ Provide a way to describe harmonic of a periodic signal
 
 # Plot
 Plot is made on cmd. It will be overlapped if dimension exceed your max cmd dimensions.
-<p align="left">
-  <img width=150 height=150 src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hellFourierPlotExample.PNG">
+<p align="center">
+  <img width=150 height=150 src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/FourierPlotExample.PNG">
 </p>
 ## Prototype
 void plot(Axis x, Axis y, std::vector<data> dataCluster = {}, char* title = "Title", bool legend = false);
