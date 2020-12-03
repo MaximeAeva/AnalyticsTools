@@ -33,12 +33,13 @@ int main()
 
     coeff.push_back(0);
 
-    x.range[0] = -50;
-    x.range[1] = 50;
-    x.step = 0.8;
-    y.color = x.color = 'b';
-    y.step = 0.05;
-    y.range[0] = -1;
+    x.range[0] = -40;
+    x.range[1] = 40;
+    x.step = 0.6;
+    y.color = 'b';
+    x.color = 'r';
+    y.step = 0.03;
+    y.range[0] = -0.1;
     y.range[1] = 1;
 
     float wdw[2] = {-4, 4};
@@ -56,7 +57,7 @@ int main()
     std::vector<data> dclust;
     //dclust.push_back(f1);
     dclust.push_back(f3);
-    dclust.push_back(f2);
-    plot(x, y, dclust, "Runge Kutta phenomenon", true);
+    //dclust.push_back(f2);
+    plot(x, y, dclust, "Fourier transform of a 2 harmonic signal", true);
     return 0;
 }

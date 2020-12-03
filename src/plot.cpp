@@ -111,7 +111,19 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
                             && (std::abs(dataCluster[dl].values[i].y-crtPos.y)<std::abs(y.step/2)))
                             {
                             SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
-                            if(dataCluster[dl].style == '\0') std::cout << dataCluster[dl].values[i].y;
+                            if(dataCluster[dl].style == '\0') 
+                            {
+                                std::ostringstream s;
+                                s << "+->(x: " << dataCluster[dl].values[i].x;
+                                s << ", y: ";
+                                s << dataCluster[dl].values[i].y << ")";
+                                if(dataCluster[dl].values[i].y > 10e-2)
+                                {
+                                    std::cout << s.str();
+                                    col += s.str().length()-1;
+                                }
+                                else std::cout << '+';
+                            }
                             else std::cout << dataCluster[dl].style;
                             SetConsoleTextAttribute(hConsole, colorInt('w'));
                             isVal = true;

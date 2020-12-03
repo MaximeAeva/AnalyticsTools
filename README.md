@@ -1,7 +1,7 @@
 # Analytics Tools
 > Some tools to analyse curves
 
-Will contains least squares, plot, AR, MA, sampling, Fourier series ...
+See [Documentation](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/DOCS.md) to get started !
 
 ![Hey!](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello.PNG)
 ![Hey!](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello2.PNG)
