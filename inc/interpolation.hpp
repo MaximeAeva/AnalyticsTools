@@ -9,6 +9,8 @@
 #include "signal.hpp"
 #include "matrix.hpp"
 
+std::vector<Point> linearInterp(std::vector<Point> f, std::vector<float> abscissa);
+
 std::vector<Point> lagrangeInterp(std::vector<Point> f, std::vector<float> abscissa);
 
 std::vector<Point> chebychevNodes(std::vector<Point> f, int deg);

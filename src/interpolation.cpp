@@ -1,5 +1,35 @@
 #include "interpolation.hpp"
 
+/**
+ * @brief Linear interpolation
+ * 
+ * @param f 
+ * @param abscissa 
+ * @return std::vector<Point> 
+ */
+std::vector<Point> linearInterp(std::vector<Point> f, std::vector<float> abscissa)
+{
+    std::vector<Point> P;
+    for(int i = 0; i<abscissa.size(); i++)
+    {
+        Point p;
+        p.x = abscissa[i];
+        int k = 0;
+        while(f[k].x < p.x)
+            k++;
+        p.y = ((f[k+1].y-f[k].y)/(f[k+1].x-f[k].x))*(p.x-f[k].x)+f[k].y;
+        P.push_back(p);
+    }
+    return P;
+}
+
+/**
+ * @brief Lagrangian interpolation
+ * 
+ * @param f 
+ * @param abscissa 
+ * @return std::vector<Point> 
+ */
 std::vector<Point> lagrangeInterp(std::vector<Point> f, std::vector<float> abscissa)
 {
     std::vector<Point> l;

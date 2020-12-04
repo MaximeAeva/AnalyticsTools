@@ -1,4 +1,4 @@
-# Welcome to docs
+# Welcome to documentation
 
 ## Table of content
 
@@ -69,7 +69,7 @@ Provide a way to describe harmonic of a periodic signal
   <img src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/MatrixPlotExample.PNG">
 </p>
 
-## Prorotype
+## Prototype
     Matrix<typename T> 
 
 ## More About
@@ -108,3 +108,11 @@ Provide a way to describe harmonic of a periodic signal
     void display()
 * Sum all the components
     T sum()
+
+-------------------------------------------------------------------------
+
+# Functions
+
+## Least Squares
+    Matrix<float> lstSqr(std::vector<Point> f, int deg)
+    
