@@ -8,6 +8,7 @@ See [Documentation](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res
 
 ## Installation
 
+Just clone, it's basic c++
 
 ## Usage example
 

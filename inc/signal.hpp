@@ -8,6 +8,7 @@
 
 #include "struct.hpp"
 #include "matrix.hpp"
+#include "method.hpp"
 
 std::vector<Point> mergeSort(std::vector<Point> f);
 
@@ -39,8 +40,6 @@ std::vector<float> tangent(std::vector<Point> f, float abscissa);
 std::vector<Point> centralMovingAverage(std::vector<Point> f, int deg);
 
 std::vector<Point> gaussianNoise(std::vector<Point> f, float mu, float sigma, bool yNoise = false);
-
-float boxMuller(float mu, float sigma);
 
 Matrix<std::complex<float> > DFT(std::vector<Point> f);
 

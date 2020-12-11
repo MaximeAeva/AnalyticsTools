@@ -12,7 +12,8 @@ PROJ_SRC_LIST = main.cpp \
 				plot.cpp \
 				leastSquares.cpp \
 				signal.cpp \
-				interpolation.cpp
+				interpolation.cpp \
+				method.cpp
 
 # objects
 PROJ_OBJ_LIST = $(PROJ_SRC_LIST:.cpp=.o)
@@ -22,9 +23,9 @@ PROJ_SRC =		$(addprefix $(SRC_DIR)/, $(PROJ_SRC_LIST))
 PROJ_OBJ =		$(addprefix $(OBJ_DIR)/, $(PROJ_OBJ_LIST))
 
 ifeq ($(DEBUG),yes)
-CXXFLAGS = -std=c++11 -Wall -Wextra -ansi -pedantic -g -Weffc++ 
+CXXFLAGS += -std=c++11 -Wall -Wextra -ansi -pedantic -g -Weffc++ 
 else
-CXXFLAGS = -std=c++11 -w -Wall -Werror -s -O2
+CXXFLAGS += -std=c++11 -w -Wall -Werror -s -O2
 endif
 
 #libs
@@ -38,14 +39,14 @@ all :		 	$(EXE)
 
 #Creating .exe with .o
 $(EXE) :    $(PROJ_OBJ)
-	@$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS) $(LDLIBS) 
+	@$(CXX) $^ -o $@  $(LFLAGS) $(LDLIBS) 
 	@echo "Compiling "$(EXE)
 
 
 # Creating .o with .cpp and libs
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp  
 	@$(shell mkdir obj)
-	@$(CXX) $(CXXFLAGS) -c -o $@ $< $(IFLAGS) 
+	@$(CXX) $(CXXFLAGS) $(IFLAGS) -c -o $@ $<  
 	@echo "Compiling" $<
 
 clean :
