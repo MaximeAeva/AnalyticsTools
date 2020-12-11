@@ -45,6 +45,25 @@ int colorInt(char color)
 }
 
 /**
+ * @brief Auto size step to display full screen in range
+ * 
+ * @param ax 
+ * @param x 
+ * @return float 
+ */
+float autoSize(Axis ax, bool x)
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbiInfo);
+    int COLS = csbiInfo.dwSize.X;
+    int LINES = csbiInfo.srWindow.Bottom - csbiInfo.srWindow.Top;
+    if(x)
+        return (ax.range[1]-ax.range[0])/COLS;
+    else
+        return (ax.range[1]-ax.range[0])/(LINES-2);
+}
+
+/**
  * @brief Plot functions on cmd
  * 
  * @param x Abscissa axis
@@ -55,6 +74,10 @@ int colorInt(char color)
  */
 void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend)
 {
+    if(x.step == 'auto')
+        x.step = autoSize(x, true);
+    if(y.step == 'auto')
+        y.step = autoSize(y, false);
     if (system("CLS")) system("clear");
     std::cout << "\033[2J";
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -62,6 +85,7 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
     //Title Part
     SetConsoleTextAttribute(hConsole, 15);
     int k = c_size(title);
+    
     int marge = floor(2+(x.range[1]-x.range[0])*(1/x.step)) - k;
     if(marge >= 0)
     {
@@ -134,7 +158,6 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
                 }
                 if(!isVal)
                 {
-                    
                     if ((std::abs(crtPos.x) < std::abs(x.step/2))
                         && (std::abs(crtPos.y) < std::abs(y.step/2)))
                         {

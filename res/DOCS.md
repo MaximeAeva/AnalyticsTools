@@ -1,5 +1,5 @@
 # Welcome to documentation
-
+-------------------------------------------------------------------------
 ## Table of content
 
 * Basic structures
@@ -15,7 +15,7 @@
 Provide information related to axis forwarded to plot
 ```console
 float range[2]
-float step = 1
+float step
 char color
 char* title
 ```
@@ -49,7 +49,7 @@ float phi
 # Plot
 Plot is made on cmd. It will be overlapped if dimension exceed your max cmd dimensions.
 <p align="center">
-  <img width=900 height=600 src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/FourierPlotExample.PNG">
+  <img src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/FourierPlotExample.PNG">
 </p>
 
 ## Prototype

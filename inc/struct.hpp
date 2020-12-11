@@ -1,9 +1,10 @@
 #ifndef STR_H
 #define STR_H
 
-#define PI  3.141592
-
+#include <windows.h>
 #include <vector>
+
+#define PI  3.141592
 
 /**
  * @brief Axis definition
@@ -15,7 +16,7 @@
  */
 struct Axis{
     float range[2];
-    float step = 1;
+    float step = 'auto';
     char color = 'w';
     char* title = "axis";
 };
@@ -57,5 +58,7 @@ struct fdata{
     float amp;
     float phi;
 };
+
+
 
 #endif
