@@ -159,4 +159,8 @@ T sum()
 ```console
 Matrix<float> lstSqr(std::vector<Point> f, int deg)
 ```
-    
+<p align="center">
+  <img src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/LeastSquaresExample.PNG">
+</p>
+
+## Lagrange Interpolation

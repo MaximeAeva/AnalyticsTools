@@ -30,7 +30,7 @@ int c_size(char* aChar)
 /**
  * @brief Intuitive way to set colors
  * 
- * @param color {b(lue), g(reen), c(yan), r(ed), v(iolet), y(ellow), w(hite)}
+ * @param color {b(lue), g(reen), c(yan), r(ed), p(urple), y(ellow), w(hite)}
  * @return int cmd color
  */
 int colorInt(char color)
@@ -39,7 +39,7 @@ int colorInt(char color)
     else if(color == 'g') return 10;
     else if(color == 'c') return 11;
     else if(color == 'r') return 12;
-    else if(color == 'v') return 13;
+    else if(color == 'p') return 13;
     else if(color == 'y') return 14;
     else return 15; 
 }

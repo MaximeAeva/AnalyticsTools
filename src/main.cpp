@@ -16,6 +16,8 @@ int main()
     data f2;
     data f3;
     std::vector<Point> polyn;
+    std::vector<Point> itrp;
+    std::vector<Point> itrpp;
     f1.color = 'r';
     std::vector<float> coeff;
     std::vector<float> coefff;
@@ -41,26 +43,33 @@ int main()
     x.range[0] = -5;
     x.range[1] = 5;
     y.color = 'b';
-    x.color = 'g';
-    y.range[0] = -21;
-    y.range[1] = 20;
+    x.color = 'b';
+    y.range[0] = -41;
+    y.range[1] = 40;
 
-    float wdw[2] = {-5, 5};
+    float wdw[2] = {-4, 4};
     float wdww[2] = {-5, 5};
     int deg = 10;
-    polyn = gaussianNoise(polynomial(coeff, 100, wdw), 0, 0.5, false);
-    f2.values = periodic(freq, 500, wdw);
-    f3.values = PSD(f2.values);
-    f3.style = '\0';
+    polyn = gaussianNoise(polynomial(coeff, 100, wdww), 0, 3, false);
+    itrp = lagrangeInterp(chebychevNodes(polyn, 99), linspace(wdw, 1000));
+    itrpp = lagrangeInterp(polyn, linspace(wdw, 2000));
+    Matrix<float> M = lstSqr(polyn, 3);
+    for(int i = 0; i<4; i++) coefff.push_back(M[i]),
+    f2.values = itrpp;
     f1.values = polyn;
-    f2.legend = "Lagrange interpolation";
+    f3.values = itrp;
+    f3.legend = "Lagrange Interpolation with ChebychevNodes";
     f1.legend = "Original Signal";
-    f3.legend = "A Simple Fourier Transform";
+    f2.legend = "Lagrangian interpolation";
+    f1.color = 'w';
+    f2.color = 'p';
     f3.color = 'g';
     std::vector<data> dclust;
+    
+    dclust.push_back(f3);
+    
     dclust.push_back(f1);
-    //dclust.push_back(f3);
-    //dclust.push_back(f2);
-    plot(x, y, dclust, "Fourier transform of a 2 harmonic signal", true);
+    dclust.push_back(f2);
+    plot(x, y, dclust, "Runge Kutta phenomenon", true);
     return 0;
 }
