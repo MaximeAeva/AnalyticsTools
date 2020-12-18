@@ -71,3 +71,54 @@ std::vector<Point> chebychevNodes(std::vector<Point> f, int deg)
     }
     return P;
 }
+
+/**
+ * @brief Natural cubic spline interpolation
+ * 
+ * @param f 
+ * @param abscissa must be in f range
+ * @return std::vector<Point> 
+ */
+std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> abscissa)
+{
+    int n = f.size();
+    std::vector<float> h;
+    std::vector<Point> P;
+    
+    Matrix<float> F(n, 1);
+    Matrix<float> C(n-1, 1);
+    Matrix<float> CP(n-1, 1);
+    Matrix<float> R(n, n);
+
+    F[0] = 0;
+    F[n-1] = 0;
+    R[0] = 1;
+    R[pow(n, 2)-1] = 1;
+    for(int i = 0; i<n-1; i++)
+    {
+        h.push_back(f[i+1].x-f[i].x);
+        if(i>0)
+        {
+            F[i] = ((f[i+1].y-f[i].y)/h[i])-((f[i].y-f[i-1].y)/h[i-1]);
+            R[i*n+i] = (h[i-1]+h[i])/3;
+            R[i*n+i+1] = h[i]/6;
+            R[i*n+i-1] = h[i-1]/6;
+        }
+    }
+    Matrix<float> M(R.rowReduc()*F);
+    for(int i = 0; i<n-1; i++)
+    {
+        C[i] = ((f[i+1].y-f[i].y)/h[i])-(h[i]/6)*(M[i+1]-M[i]);
+        CP[i] = f[i].y-M[i]*(pow(h[i], 2)/6);
+    }
+    int l = 0;
+    for(int i = 0; i<abscissa.size(); i++)
+    {
+        Point p;
+        p.x = abscissa[i];
+        while(p.x<f[l].x) l++;
+        p.y = (M[l]*pow(f[l+1].x-p.x, 3)/(6*h[l])) + (M[l+1]*pow(p.x-f[l].x, 3)/(6*h[l])) + (C[l]*(p.x-f[l].x)) + CP[l];
+        P.push_back(p);
+    }
+    return P;
+}

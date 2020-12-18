@@ -18,6 +18,7 @@ int main()
     std::vector<Point> polyn;
     std::vector<Point> itrp;
     std::vector<Point> itrpp;
+    std::vector<Point> itrppp;
     f1.color = 'r';
     std::vector<float> coeff;
     std::vector<float> coefff;
@@ -36,9 +37,9 @@ int main()
     coeff.push_back(rand()%100/50);
     coeff.push_back(rand()%100/50);
     coeff.push_back(rand()%100/50);
-    coeff.push_back(rand()%100/50);
-    coeff.push_back(rand()%100/50);
-    coeff.push_back(rand()%100/50);
+    //coeff.push_back(rand()%100/50);
+    //coeff.push_back(rand()%100/50);
+    //coeff.push_back(rand()%100/50);
 
     x.range[0] = -5;
     x.range[1] = 5;
@@ -50,23 +51,24 @@ int main()
     float wdw[2] = {-4, 4};
     float wdww[2] = {-5, 5};
     int deg = 10;
-    polyn = gaussianNoise(polynomial(coeff, 100, wdww), 0, 3, false);
+    polyn = gaussianNoise(polynomial(coeff, 5, wdww), 0, 1, false);
     itrp = lagrangeInterp(chebychevNodes(polyn, 99), linspace(wdw, 1000));
     itrpp = lagrangeInterp(polyn, linspace(wdw, 2000));
+    itrppp = splineInterp(polyn, linspace(wdw, 200));
     Matrix<float> M = lstSqr(polyn, 3);
     for(int i = 0; i<4; i++) coefff.push_back(M[i]),
-    f2.values = itrpp;
+    f2.values = itrppp;
     f1.values = polyn;
     f3.values = itrp;
     f3.legend = "Lagrange Interpolation with ChebychevNodes";
     f1.legend = "Original Signal";
     f2.legend = "Lagrangian interpolation";
-    f1.color = 'w';
-    f2.color = 'p';
+    f1.color = 'y';
+    f2.color = 'g';
     f3.color = 'g';
     std::vector<data> dclust;
     
-    dclust.push_back(f3);
+    //dclust.push_back(f3);
     
     dclust.push_back(f1);
     dclust.push_back(f2);
