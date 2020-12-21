@@ -56,7 +56,7 @@ float autoSize(Axis ax, bool x)
     CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbiInfo);
     int COLS = csbiInfo.dwSize.X;
-    int LINES = csbiInfo.srWindow.Bottom - csbiInfo.srWindow.Top;
+    int LINES = csbiInfo.srWindow.Bottom - csbiInfo.srWindow.Top-1;
     if(x)
         return (ax.range[1]-ax.range[0])/COLS;
     else

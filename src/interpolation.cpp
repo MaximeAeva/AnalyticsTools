@@ -76,10 +76,11 @@ std::vector<Point> chebychevNodes(std::vector<Point> f, int deg)
  * @brief Natural cubic spline interpolation
  * 
  * @param f 
- * @param abscissa must be in f range
+ * @param abscissa 
+ * @param natural Is the spline natural
  * @return std::vector<Point> 
  */
-std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> abscissa)
+std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> abscissa, bool natural)
 {
     int n = f.size();
     std::vector<float> h;
@@ -108,7 +109,7 @@ std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> absciss
     Matrix<float> M(R.rowReduc()*F);
     for(int i = 0; i<n-1; i++)
     {
-        C[i] = ((f[i+1].y-f[i].y)/h[i])-(h[i]/6)*(M[i+1]-M[i]);
+        C[i] = ((f[i+1].y-f[i].y)/h[i])-((h[i]/6)*(M[i+1]-M[i]));
         CP[i] = f[i].y-M[i]*(pow(h[i], 2)/6);
     }
     int l = 0;
@@ -116,9 +117,55 @@ std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> absciss
     {
         Point p;
         p.x = abscissa[i];
-        while(p.x<f[l].x) l++;
-        p.y = (M[l]*pow(f[l+1].x-p.x, 3)/(6*h[l])) + (M[l+1]*pow(p.x-f[l].x, 3)/(6*h[l])) + (C[l]*(p.x-f[l].x)) + CP[l];
+        while(f[l].x<p.x) l++;
+        p.y = (M[l-1]*pow(f[l].x-p.x, 3)/(6*h[l-1])) + (M[l]*pow(p.x-f[l-1].x, 3)/(6*h[l-1])) + (C[l-1]*(p.x-f[l-1].x)) + CP[l-1];
         P.push_back(p);
     }
+    return P;
+}
+
+std::vector<Point> smoothSplineInterp(std::vector<Point> f, std::vector<float> abscissa, float lambda)
+{
+    int n = f.size();
+    std::vector<float> h;
+    std::vector<Point> P;
+    
+    Matrix<float> Q(n, n-2);
+    Matrix<float> R(n-2, n-2);
+    Matrix<float> I(n, n);
+    Matrix<float> Y(n, 1);
+    I.id();
+
+    for(int i = 0; i<n-1; i++)
+        h.push_back(f[i+1].x-f[i].x);
+
+    for(int i = 0; i<n; i++)
+    {
+        Y[i] = f[i].y;
+        if(i<n-1 && i>0)
+            Q[i*(n-2)+i-1] = (1/h[i-1])+(1/h[i]);
+        if(i>1)
+            Q[i*(n-2)+i-2] = -1/h[i-1];
+        if(i<n-2)
+        {
+            Q[i*(n-2)+i] = -1/h[i];
+            R[i*(n-2)+i] = (h[i]+h[i+1])/3;
+            if(i>0)
+                R[i*(n-2)+i-1] = -h[i-1]/6;
+        }
+        if(i<n-3)
+            R[i*(n-2)+i+1] = -h[i]/6;
+    }
+    Matrix<float> K(Q*R.rowReduc()*Q.Trsp());
+    Matrix<float> M((I+(K/(1/lambda))));
+    Matrix<float> S(M.rowReduc()*Y);
+    for(int i = 0; i<n; i++)
+    {
+        Point p;
+        p.x = f[i].x;
+        p.y = S[i];
+        P.push_back(p);
+    }
+    P = splineInterp(P, abscissa, true);
     return P;
 }

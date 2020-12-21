@@ -15,6 +15,8 @@ std::vector<Point> lagrangeInterp(std::vector<Point> f, std::vector<float> absci
 
 std::vector<Point> chebychevNodes(std::vector<Point> f, int deg);
 
-std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> abscissa);
+std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> abscissa, bool natural = true);
+
+std::vector<Point> smoothSplineInterp(std::vector<Point> f, std::vector<float> abscissa, float lambda);
 
 #endif

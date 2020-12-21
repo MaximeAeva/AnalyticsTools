@@ -3,8 +3,9 @@
 
 See [Documentation](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/DOCS.md) to get started !
 
-![Hey!](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello.PNG)
-![Hey!](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello2.PNG)
+<p align="center">
+  <img src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello.gif">
+</p>
 
 ## Installation
 
@@ -20,6 +21,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.6.0
+    * Spline interpolation, Smooth spline
 * 0.5.0
     * Discrete Fourier Transform, Power Spectral Density
 * 0.4.2
