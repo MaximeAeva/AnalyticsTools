@@ -63,6 +63,46 @@ float autoSize(Axis ax, bool x)
         return (ax.range[1]-ax.range[0])/(LINES-2);
 }
 
+std::vector<float> autoRange(std::vector<data> dataCluster, char *mode) 
+{
+    float m, M;
+    if(mode == "x")
+    {
+        m = dataCluster[0].values[0].x;
+        M = dataCluster[0].values[0].x;
+    }
+    else
+    {
+        m = dataCluster[0].values[0].y;
+        M = dataCluster[0].values[0].y;
+    }
+    for(int dl = 0; dl<dataCluster.size(); dl++)
+    {
+        for(int i = 0; i<dataCluster[dl].values.size(); i++)
+        {
+            if(mode == "x")
+            {
+                if(m > dataCluster[dl].values[i].x)
+                    m = dataCluster[dl].values[i].x;
+                if(M < dataCluster[dl].values[i].x)
+                    M = dataCluster[dl].values[i].x;
+            }
+            else
+            {
+                if(m > dataCluster[dl].values[i].y)
+                    m = dataCluster[dl].values[i].y;
+                if(M < dataCluster[dl].values[i].y)
+                    M = dataCluster[dl].values[i].y;
+            }
+        }
+    }
+    float k = 0.1*(M-m);
+    std::vector<float> v;
+    v.push_back(m-k);
+    v.push_back(M+k);
+    return v;
+}
+
 /**
  * @brief Plot functions on cmd
  * 
@@ -74,6 +114,18 @@ float autoSize(Axis ax, bool x)
  */
 void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend)
 {
+    if(!(x.range[1]-x.range[0]))
+    {
+        std::vector<float> rng = autoRange(dataCluster, "x");
+        x.range[0] = rng.front();
+        x.range[1] = rng.back();
+    }
+    if(!(y.range[1]-y.range[0]))
+    {
+        std::vector<float> rng = autoRange(dataCluster, "y");
+        y.range[0] = rng.front();
+        y.range[1] = rng.back();
+    }
     if(x.step == 'auto')
         x.step = autoSize(x, true);
     if(y.step == 'auto')

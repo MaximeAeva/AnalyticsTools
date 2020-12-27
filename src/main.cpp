@@ -27,6 +27,7 @@ int main()
     std::vector<Point> testInterp;
     testInterp.push_back({0, 0});
     testInterp.push_back({1, 6});
+    testInterp.push_back({2, 3});
     testInterp.push_back({3, 5});
     testInterp.push_back({5, 0});
 
@@ -55,12 +56,12 @@ int main()
     //coeff.push_back(rand()%100/50);
     //coeff.push_back(rand()%100/50);
 
-    x.range[0] = -0.1;
-    x.range[1] = 5.1;
+    //x.range[0] = -0.1;
+    //x.range[1] = 5.1;
     y.color = 'g';
     x.color = 'g';
-    y.range[0] = -1;
-    y.range[1] = 8;
+    //y.range[0] = -1;
+    //y.range[1] = 8;
 
     float wdw[2] = {0.01, 5};
     float wdww[2] = {-5, 5};
@@ -100,8 +101,6 @@ int main()
     strcpy(str, "Smooth Spline Interpolation. Lambda: ");
     strcat(str, t);
     plot(x, y, dclust, str, true);
-    int a;
-    std::cin >> a;
     }
     return 0;
 }

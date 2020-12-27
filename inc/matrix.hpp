@@ -28,6 +28,7 @@ class Matrix{
         T sum();
         inline int getRow(const Matrix<T>& A){return A.n_rows;};
         inline int getCol(const Matrix<T>& A){return A.n_cols;};
+        inline int getSize(){return (this->n_cols*this->n_rows);};
     
     private:
         T* M;

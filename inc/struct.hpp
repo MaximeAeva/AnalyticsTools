@@ -15,7 +15,7 @@
  * @param title Name of the axis
  */
 struct Axis{
-    float range[2];
+    float range[2] = {0, 0};
     float step = 'auto';
     char color = 'w';
     char* title = "axis";
