@@ -10,8 +10,7 @@ int main()
 {
     srand(time(NULL));
 
-    Axis x;
-    Axis y; 
+    
     data f1;
     data f2;
     data f3;
@@ -56,12 +55,10 @@ int main()
     //coeff.push_back(rand()%100/50);
     //coeff.push_back(rand()%100/50);
 
-    //x.range[0] = -0.1;
-    //x.range[1] = 5.1;
+    Axis x;
+    Axis y;
     y.color = 'g';
-    x.color = 'g';
-    //y.range[0] = -1;
-    //y.range[1] = 8;
+    x.color = 'g'; 
 
     float wdw[2] = {0.01, 5};
     float wdww[2] = {-5, 5};
@@ -73,6 +70,7 @@ int main()
     //itrppp = splineInterp(polyn, linspace(wdw, 200), true);
     for(int i = 0; i<100; i+=2)
     {
+    
     char t[5];
     float p = float(i)/100;
     float lbd = (1-p)/(p+1e-10);
@@ -100,7 +98,9 @@ int main()
     char str[50];
     strcpy(str, "Smooth Spline Interpolation. Lambda: ");
     strcat(str, t);
-    plot(x, y, dclust, str, true);
+    plot(x, y, dclust, str, true, floor(165/2), 10);
+    int a;
+    std::cin >> a;
     }
     return 0;
 }

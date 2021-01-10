@@ -11,7 +11,7 @@ void gotoxy(int x, int y)
     COORD coord;
     coord.X = x;
     coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ),coord);
+    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), coord);
 }
 
 /**
@@ -48,15 +48,16 @@ int colorInt(char color)
  * @brief Auto size step to display full screen in range
  * 
  * @param ax 
- * @param x 
+ * @param x Is x axis ?
+ * @param n Divide screen in n part (default 1)
  * @return float 
  */
-float autoSize(Axis ax, bool x)
+float autoSize(Axis ax, bool x, int n = 2)
 {
     CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbiInfo);
-    int COLS = csbiInfo.dwSize.X;
-    int LINES = csbiInfo.srWindow.Bottom - csbiInfo.srWindow.Top-1;
+    int COLS = (csbiInfo.dwSize.X)/n;
+    int LINES = (csbiInfo.srWindow.Bottom - csbiInfo.srWindow.Top-1)/n;
     if(x)
         return (ax.range[1]-ax.range[0])/COLS;
     else
@@ -111,8 +112,11 @@ std::vector<float> autoRange(std::vector<data> dataCluster, char *mode)
  * @param dataCluster A vector of data
  * @param title The graph title
  * @param legend Enable legend display
+ * @param xStart Start pos (default 0)
+ * @param yStart Start pos (default 0)
  */
-void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend)
+void plot(Axis x, Axis y, std::vector<data> dataCluster, 
+            char* title, bool legend, int xStart, int yStart)
 {
     if(!(x.range[1]-x.range[0]))
     {
@@ -130,15 +134,21 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
         x.step = autoSize(x, true);
     if(y.step == 'auto')
         y.step = autoSize(y, false);
-    if (system("CLS")) system("clear");
+    if (system("CLS") && (xStart+yStart) == 0) system("clear");
     std::cout << "\033[2J";
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    gotoxy(0, 0);
+    gotoxy(0, yStart);
     //Title Part
     SetConsoleTextAttribute(hConsole, 15);
     int k = c_size(title);
     
     int marge = floor(2+(x.range[1]-x.range[0])*(1/x.step)) - k;
+    int cnt = 0;
+    while(cnt < xStart)
+    {
+        std::cout << " ";
+        cnt++;
+    }
     if(marge >= 0)
     {
         for(int i = 0; i<marge/2; i++) std::cout << " ";
@@ -175,6 +185,12 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
     {
         for(int row = 0; row < floor((y.range[1]-y.range[0])*(1/y.step)); row++)
         {
+            int cnt = 0;
+            while(cnt < xStart)
+            {
+                std::cout << " ";
+                cnt++;
+            }
             for(int col = 0; col < floor((x.range[1]-x.range[0])*(1/x.step)); col++)
             {
                 bool isVal = false;
@@ -253,6 +269,24 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legen
     }
 }
 
-
+void subplot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend, int pos, int nH, int nW)
+{
+    if(!(x.range[1]-x.range[0]))
+    {
+        std::vector<float> rng = autoRange(dataCluster, "x");
+        x.range[0] = rng.front();
+        x.range[1] = rng.back();
+    }
+    if(!(y.range[1]-y.range[0]))
+    {
+        std::vector<float> rng = autoRange(dataCluster, "y");
+        y.range[0] = rng.front();
+        y.range[1] = rng.back();
+    }
+    if(x.step == 'auto')
+        x.step = autoSize(x, true);
+    if(y.step == 'auto')
+        y.step = autoSize(y, false);
+}
 
 

@@ -11,6 +11,7 @@
 
 #include "struct.hpp"
 
-void plot(Axis x, Axis y, std::vector<data> dataCluster = {}, char* title = "Title", bool legend = false);
+void plot(Axis x, Axis y, std::vector<data> dataCluster = {}, 
+            char* title = "Title", bool legend = false, int xStart = 0, int yStart = 0);
 
 #endif
