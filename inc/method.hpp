@@ -15,4 +15,6 @@ std::vector<float> linspace(float wdw[2], int n_pts);
 
 std::vector<Point> mergeSort(std::vector<Point> f);
 
+void clearScreen();
+
 #endif

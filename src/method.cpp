@@ -144,3 +144,12 @@ std::vector<Point> mergeSort(std::vector<Point> f)
     }
 }
 
+/**
+ * @brief Call to clear screen
+ * 
+ */
+void clearScreen()
+{ 
+    if (system("CLS")) system("clear");
+    std::cout << "\033[2J";
+}

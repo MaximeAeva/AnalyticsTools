@@ -14,4 +14,7 @@
 void plot(Axis x, Axis y, std::vector<data> dataCluster = {}, 
             char* title = "Title", bool legend = false, int xStart = 0, int yStart = 0);
 
+void subplot(Axis x, Axis y, std::vector<data> dataCluster,
+             char* title, bool legend, int pos, int nH, int nW);
+
 #endif

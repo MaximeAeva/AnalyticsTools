@@ -52,7 +52,7 @@ int colorInt(char color)
  * @param n Divide screen in n part (default 1)
  * @return float 
  */
-float autoSize(Axis ax, bool x, int n = 2)
+float autoSize(Axis ax, bool x, int n = 1)
 {
     CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbiInfo);
@@ -134,8 +134,8 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster,
         x.step = autoSize(x, true);
     if(y.step == 'auto')
         y.step = autoSize(y, false);
-    if (system("CLS") && (xStart+yStart) == 0) system("clear");
-    std::cout << "\033[2J";
+    //if (system("CLS") && (xStart+yStart) == 0) system("clear");
+    //std::cout << "\033[2J";
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     gotoxy(0, yStart);
     //Title Part
@@ -209,12 +209,8 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster,
                                 s << "+->(x: " << dataCluster[dl].values[i].x;
                                 s << ", y: ";
                                 s << dataCluster[dl].values[i].y << ")";
-                                if(dataCluster[dl].values[i].y > 10e-2)
-                                {
-                                    std::cout << s.str();
-                                    col += s.str().length()-1;
-                                }
-                                else std::cout << '+';
+                                std::cout << s.str();
+                                col += s.str().length()-1;
                             }
                             else std::cout << dataCluster[dl].style;
                             SetConsoleTextAttribute(hConsole, colorInt('w'));
@@ -258,6 +254,12 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster,
         }
         if(legend)
         {
+            int u = 0;
+            while(u<xStart)
+            {
+                std::cout << " ";
+                u++;
+            }
             for(int dl = 0; dl<dataCluster.size(); dl++)
             {
                 SetConsoleTextAttribute(hConsole, colorInt(dataCluster[dl].color));
@@ -269,8 +271,25 @@ void plot(Axis x, Axis y, std::vector<data> dataCluster,
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param x x Axis
+ * @param y y Axis
+ * @param dataCluster Data to plot 
+ * @param title Plot title
+ * @param legend Enable legend
+ * @param pos Plot position
+ * @param nH Plots number along Y axis
+ * @param nW Plots number along X axis
+ */
 void subplot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool legend, int pos, int nH, int nW)
 {
+    
+    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbiInfo);
+    int COLS = (csbiInfo.dwSize.X-1)/nW;
+    int LINES = (csbiInfo.srWindow.Bottom - csbiInfo.srWindow.Top-1)/nH;
     if(!(x.range[1]-x.range[0]))
     {
         std::vector<float> rng = autoRange(dataCluster, "x");
@@ -284,9 +303,11 @@ void subplot(Axis x, Axis y, std::vector<data> dataCluster, char* title, bool le
         y.range[1] = rng.back();
     }
     if(x.step == 'auto')
-        x.step = autoSize(x, true);
+        x.step = autoSize(x, true, nW);
     if(y.step == 'auto')
-        y.step = autoSize(y, false);
+        y.step = autoSize(y, false, nH);
+
+    plot(x, y, dataCluster, title, legend, COLS*(pos%nW), LINES*(pos/nW)+(pos/nW));
 }
 
 
