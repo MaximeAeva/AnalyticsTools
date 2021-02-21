@@ -92,7 +92,6 @@ int main()
     f6.legend = "Last value";
     f7.legend = "deg 3 noisy func";
     f8.legend = "Least square";
-    f1.color = 'r';
     f1.style = 'O';
     f2.color = 'b';
     f4.style = '\0';
