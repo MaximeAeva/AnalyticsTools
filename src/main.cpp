@@ -45,7 +45,7 @@ int main()
     expsng.push_back({0, 10*exp(0)});
     
 
-    coeff.push_back(rand()%100/50);
+    coeff.push_back(20+rand()%100/50);
     coeff.push_back(rand()%100/50);
     coeff.push_back(rand()%100/50);
     coeff.push_back(rand()%100/50);
@@ -56,12 +56,16 @@ int main()
     xsin.color = 'b';
     ysin.color = 'b';
     xsin.range[0] = -0.5;
-    xsin.range[1] = PI/2; 
+    xsin.range[1] = 2.5*PI; 
 
     Axis xexp;
     Axis yexp;
     xexp.color = 'g';
     yexp.color = 'g';
+    xexp.range[0] = -1.5;
+    xexp.range[1] = 1.5;
+    yexp.range[0] = -1.5;
+    yexp.range[1] = 1.5;
 
     Axis xspl;
     Axis yspl;
@@ -77,44 +81,53 @@ int main()
     xitp.color = 'y'; 
     xitp.range[0] = -8;
     xitp.range[1] = 8;
+    yitp.range[0] = 5;
+    yitp.range[1] = 50;
     
 
     float wdw[2] = {0.01, 5};
     float wdww[2] = {-10, 10};
 
-    polyn = gaussianNoise(polynomial(coeff, 20, wdww), 0, 1, false);
+    polyn = gaussianNoise(polynomial(coeff, 150, wdww), 0, 2, false);
     
     f1.legend = "Original Signal";
     f2.legend = "Smooth spline";
     f3.legend = "Sin values";
     f4.legend = "Last value";
-    f5.legend = "Exp values";
+    f5.legend = "Sin phase values";
     f6.legend = "Last value";
     f7.legend = "deg 3 noisy func";
-    f8.legend = "Least square";
+    f8.legend = "Lagrangian Chebychev";
     f1.style = 'O';
     f2.color = 'b';
     f4.style = '\0';
     f4.color = 'p';
     f6.style = '\0';
     f6.color = 'p'; 
-    f8.color = 'c';
+    f8.color = 'r';
 
+    std::vector<data> dclust;
+    std::vector<data> dcSin;
+    std::vector<data> dcExp;
+    std::vector<data> dcLs;
 
+    std::vector<float> cofcof;
+
+    
     for(int i = 0; i<100; i+=2)
     {
-    //Matrix<float> lsCoeff = lstSqr(polyn, i/2);
-    //std::vector<float> cofcof;
-    /*for(int b = 0; b<(i/2)+1; b++) cofcof.push_back(b);//lsCoeff[w]);
-    itrpp = polynomial(cofcof, 20, wdww);*/
-    sinVal.push_back({i*(PI/200), sin(i*(PI/200))});
-    sinsng[0] = {i*(PI/200), sin(i*(PI/200))};
-    expVal.push_back({tan(-(PI/2)*sin(i*(PI/200))), 10*exp(tan(-(PI/2)*sin(i*(PI/200))))});
-    expsng[0] = {tan(-(PI/2)*sin(i*(PI/200))), 10*exp(tan(-(PI/2)*sin(i*(PI/200))))};
-    float lbd =  10*exp(tan(-(PI/2)*sin(i*(PI/200))));
+    sinVal.clear();
+    
+    for(int k = 0; k<100; k++)
+        sinVal.push_back({k*(PI/50), (sin(k*(PI/50)+(i*PI/50)-PI/2)/2)+0.5});
+    sinsng[0] = {100*(PI/50), (sin(100*(PI/50)+(i*PI/50)-PI/2)/2)+0.5};
+    expVal.push_back({cos((i*PI/50)-PI/2), sin((i*PI/50)-PI/2)});
+    expsng[0] = {cos((i*PI/50)-PI/2), sin((i*PI/50)-PI/2)};
+    float lbd =  10*exp(tan(-(PI/2)*sinsng[0].y));
     char t[5];
     sprintf(t, "%f", lbd);
     std::vector<Point> OSF = smoothSplineInterp(testInterp, linspace(wdw, 100), lbd);
+    itrpp = lagrangeInterp(chebychevNodes(polyn, 2+ceil(98*sinsng[0].y)), linspace(xitp.range, 75));
 
     f2.values = OSF;
     f1.values = testInterp;
@@ -123,13 +136,12 @@ int main()
     f5.values = expVal;
     f6.values = expsng;
     f7.values = polyn;
-    //f8.values = itrpp;
+    f8.values = itrpp;
 
-    std::vector<data> dclust;
-    std::vector<data> dcSin;
-    std::vector<data> dcExp;
-    std::vector<data> dcLs;
-
+    dclust.clear();
+    dcSin.clear();
+    dcExp.clear();
+    dcLs.clear();
     
     dclust.push_back(f1);
     dclust.push_back(f2);
@@ -137,18 +149,19 @@ int main()
     dcSin.push_back(f3);
     dcExp.push_back(f6);
     dcExp.push_back(f5);
-    //dcLs.push_back(f8);
+    dcLs.push_back(f8);
     dcLs.push_back(f7);
     char str[50];
     strcpy(str, "Smooth Spline Interpolation. Lambda: ");
     strcat(str, t);
     char t1[5];
-    sprintf(t1, "%d", i/2);
+    int c = 2+ceil(98*sinsng[0].y);
+    sprintf(t1, "%d", c);
     char str1[50];
-    strcpy(str1, "Least squares fit. Degree: ");
+    strcpy(str1, "Lagrangian-Chebychev interpolation. Abscissa used: ");
     strcat(str1, t1);
     clearScreen();
-    subplot(xexp, yexp, dcExp, "Exp function", true, 1, 2, 2);
+    subplot(xexp, yexp, dcExp, "Phase", true, 1, 2, 2);
     subplot(xsin, ysin, dcSin, "Sinus function", true, 0, 2, 2);
     subplot(xspl, yspl, dclust, str, true, 3, 2, 2);
     subplot(xitp, yitp, dcLs, str1, true, 2, 2, 2);

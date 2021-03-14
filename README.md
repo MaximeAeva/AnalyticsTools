@@ -21,6 +21,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.7.0
+    * Subplots
 * 0.6.0
     * Spline interpolation, Smooth spline
 * 0.5.0

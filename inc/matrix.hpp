@@ -73,6 +73,7 @@ Matrix<T>::Matrix(const Matrix<T>& A)
 template <class T>
 Matrix<T>::~Matrix()
 {
+    M = NULL;
     delete [] M;
 }
 
