@@ -22,10 +22,13 @@ class Matrix{
         Matrix<T> operator^(const int& power) ;
         Matrix<T> operator/(const T& value) ;
         Matrix<T> Trsp() const;
+        T norm() const;
         Matrix<T> rowReduc() const;
+        void ones(const int& rows, const int& cols) const;
         void id();
         void display();
         T sum();
+        T eigenValue(const Matrix<T>& v);
         inline int getRow(const Matrix<T>& A){return A.n_rows;};
         inline int getCol(const Matrix<T>& A){return A.n_cols;};
         inline int getSize(){return (this->n_cols*this->n_rows);};
@@ -86,6 +89,12 @@ void Matrix<T>::id()
 {
     if(n_rows==n_cols)
         for(int i=0;i<n_rows;i++) this->M[(i*n_cols)+i]++;
+}
+
+template <class T>
+void Matrix<T>::ones(const int& rows, const int& cols) const
+{
+    for(int i=0;i<M.getSize();i++) M[i]++;
 }
 
 /**
@@ -235,6 +244,24 @@ Matrix<T> Matrix<T>::Trsp() const
 }
 
 /**
+ * @brief Frobenius norm
+ * 
+ * @tparam T 
+ * @return T 
+ */
+template <class T>
+T Matrix<T>::norm() const
+{
+    T value = 0;
+    for(int i = 0; i<n_rows; i++)
+        for(int j = 0; j<n_cols; j++)
+        {
+            value += pow(M[(j*n_rows)+i], 2);
+        }
+    return sqrt(value);
+}
+
+/**
  * @brief Return the inverse of a square matrix
  * 
  * @return Matrix 
@@ -352,6 +379,13 @@ void Matrix<T>::display()
         }
         std::cout << std::endl << std::endl;
     }
+}
+
+template <class T>
+T Matrix<T>::eigenValue(const Matrix<T>& v)
+{
+    T vInv = v/pow(v.norm(), 2);
+    return M*v*vInv;
 }
 
 #endif

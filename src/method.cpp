@@ -153,3 +153,29 @@ void clearScreen()
     if (system("CLS")) system("clear");
     std::cout << "\033[2J";
 }
+
+template <class T>
+std::vector<Matrix<T> > svd_iter(Matrix<T> A)
+{ 
+    std::vector<Matrix<T> > k;
+    T evNew;
+    T ev;
+    int r = A.getRow();
+    int c = A.getCol();
+    Matrix<T> v(1, c);
+    v.ones()/sqrt(c);
+    ev = A.eigenValue(v);
+    while(true)
+    { 
+        Matrix<T> Av(A*v);
+        Matrix<T> vNew(Av/Av.norm());
+        evNew = A.eigenValue(vNew);
+        if(abs(ev-evNew)<0.01)
+            break;
+        v = vNew;
+        ev = evNew;
+    }
+    k.push_back(v);
+    k.push_back(v);
+    return k;
+}

@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <cmath>
+#include <complex>
 #include <iostream>
 
 #include "struct.hpp"
+#include "matrix.hpp"
 
 float boxMuller(float mu, float sigma);
 
