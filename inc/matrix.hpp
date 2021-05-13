@@ -91,6 +91,13 @@ void Matrix<T>::id()
         for(int i=0;i<n_rows;i++) this->M[(i*n_cols)+i]++;
 }
 
+/**
+ * @brief Fill with one
+ * 
+ * @tparam T 
+ * @param rows 
+ * @param cols 
+ */
 template <class T>
 void Matrix<T>::ones(const int& rows, const int& cols) const
 {
@@ -381,6 +388,13 @@ void Matrix<T>::display()
     }
 }
 
+/**
+ * @brief Give the eigenValue associated with the desired vector
+ * 
+ * @tparam T 
+ * @param v 
+ * @return T 
+ */
 template <class T>
 T Matrix<T>::eigenValue(const Matrix<T>& v)
 {

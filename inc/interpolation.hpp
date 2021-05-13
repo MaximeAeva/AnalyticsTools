@@ -19,4 +19,6 @@ std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> absciss
 
 std::vector<Point> smoothSplineInterp(std::vector<Point> f, std::vector<float> abscissa, float lambda);
 
+std::vector<Point> residuals(std::vector<Point> f, std::vector<Point> g, int ptsNumb);
+
 #endif

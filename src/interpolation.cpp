@@ -10,14 +10,14 @@
 std::vector<Point> linearInterp(std::vector<Point> f, std::vector<float> abscissa)
 {
     std::vector<Point> P;
+    int k = 0;
     for(int i = 0; i<abscissa.size(); i++)
     {
         Point p;
         p.x = abscissa[i];
-        int k = 0;
-        while(f[k].x < p.x)
+        while(f[k].x <= p.x)
             k++;
-        p.y = ((f[k+1].y-f[k].y)/(f[k+1].x-f[k].x))*(p.x-f[k].x)+f[k].y;
+        p.y = ((f[k].y-f[k-1].y)/(f[k].x-f[k-1].x))*(p.x-f[k-1].x)+f[k-1].y;
         P.push_back(p);
     }
     return P;
@@ -124,6 +124,14 @@ std::vector<Point> splineInterp(std::vector<Point> f, std::vector<float> absciss
     return P;
 }
 
+/**
+ * @brief Smooth spline interpolation
+ * 
+ * @param f Function to interpolate
+ * @param abscissa desired return abscissa
+ * @param lambda smoothness factor
+ * @return std::vector<Point> 
+ */
 std::vector<Point> smoothSplineInterp(std::vector<Point> f, std::vector<float> abscissa, float lambda)
 {
     int n = f.size();
@@ -168,4 +176,45 @@ std::vector<Point> smoothSplineInterp(std::vector<Point> f, std::vector<float> a
     }
     P = splineInterp(P, abscissa, true);
     return P;
+}
+
+/**
+ * @brief Give residuals from linear interp between 2 functions
+ * 
+ * @param f 
+ * @param g 
+ * @param ptsNumb 
+ * @return std::vector<Point> 
+ */
+std::vector<Point> residuals(std::vector<Point> f, std::vector<Point> g, int ptsNumb)
+{
+    float mini, maxi, step;
+    std::vector<float> abscissa;
+    std::vector<Point> e, h, r;
+    if(f[0].x<g[0].x)
+        mini = g[0].x;
+    else 
+        mini = f[0].x;
+    if(f.back().x>g.back().x)
+        maxi = g.back().x;
+    else 
+        maxi = f.back().x;
+    step = (maxi-mini)/(ptsNumb-1);
+    std::cout << step;
+    float i = mini;
+    while(i<=maxi) 
+    {
+        abscissa.push_back(i);
+        i+=step;
+    }
+    e = linearInterp(f, abscissa);
+    h = linearInterp(g, abscissa);
+    for(int i = 0; i<e.size(); i++)
+    {
+        Point p;
+        p.x = abscissa[i];
+        p.y = sqrt(pow(e[i].y-h[i].y, 2));
+        r.push_back(p);
+    }
+    return r;
 }
