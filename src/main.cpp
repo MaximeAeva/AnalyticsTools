@@ -81,7 +81,7 @@ int main()
     float wdw[2] = {0.01, 5};
     float wdww[2] = {-10, 10};
 
-    polyn = gaussianNoise(polynomial(coeff, 150, wdww), 0, 2, false);
+    polyn = gaussianNoise(polynomial(coeff, 150, wdww), 0, 4, false);
     
     f1.legend = "Original Signal";
     f2.legend = "Smooth spline";
@@ -101,8 +101,11 @@ int main()
     std::vector<data> dcSin;
     std::vector<data> dcRes;
     std::vector<data> dcLs;
+    std::vector<Point> OSF;
 
     std::vector<float> cofcof;
+    float lbd;
+    float resval;
 
     
     for(int i = 0; i<100; i+=2)
@@ -112,14 +115,14 @@ int main()
         dcSin.clear();
         dcRes.clear();
         dcLs.clear();
-        float resval = 0;
+        resval = 0;
 
         for(int k = 0; k<100; k++)
             sinVal.push_back({k*(PI/50), (sin(k*(PI/50)+(i*PI/50)-PI/2)/2)+0.5});
         sinsng[0] = {100*(PI/50), (sin(100*(PI/50)+(i*PI/50)-PI/2)/2)+0.5};
         
-        float lbd =  10*exp(tan(-(PI/2)*sinsng[0].y));
-        std::vector<Point> OSF = smoothSplineInterp(testInterp, linspace(wdw, 100), lbd);
+        lbd =  10*exp(tan(-(PI/2)*sinsng[0].y));
+        OSF = smoothSplineInterp(testInterp, linspace(wdw, 100), lbd);
         
         itrpp = lagrangeInterp(chebychevNodes(polyn, 2+ceil(98*sinsng[0].y)), linspace(xitp.range, 75));
         
@@ -155,9 +158,9 @@ int main()
         strcpy(str1, "Lagrangian-Chebychev interpolation. Abscissa used: ");
         strcat(str1, t1);
 
-        char t2[5];
+        char t2[10];
         sprintf(t2, "%f", resval);
-        char str2[30];
+        char str2[50];
         strcpy(str2, "Interpolation residuals. Sum : ");
         strcat(str2, t2);
 

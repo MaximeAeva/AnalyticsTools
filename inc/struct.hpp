@@ -42,7 +42,7 @@ struct Point{
 struct data{
     std::vector<Point> values;
     char* legend;
-    char color;
+    char color = 'w';
     char style = '+';
 };
 
