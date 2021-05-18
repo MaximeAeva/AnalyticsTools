@@ -39,4 +39,6 @@ Matrix<std::complex<float> > DFT(std::vector<Point> f);
 
 std::vector<Point> PSD(std::vector<Point> f);
 
+std::vector<Point> tapering(std::vector<Point> f, std::string method = "None");
+
 #endif

@@ -7,6 +7,11 @@ See [Documentation](https://github.com/MaximeAeva/AnalyticsTools/blob/master/res
   <img src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/hello.gif">
 </p>
 
+Chirp example
+<p align="center">
+  <img src="https://github.com/MaximeAeva/AnalyticsTools/blob/master/res/Chirp.gif">
+</p>
+
 ## Installation
 
 Just clone, it's basic c++
@@ -21,6 +26,8 @@ Will ideally be a lib. For now it's just a set of functions
 
 ## Release History
 
+* 0.7.1
+    * SVD beginning, tapering functions
 * 0.7.0
     * Subplots
 * 0.6.0

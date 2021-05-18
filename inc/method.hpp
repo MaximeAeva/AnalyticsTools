@@ -19,4 +19,10 @@ std::vector<Point> mergeSort(std::vector<Point> f);
 
 void clearScreen();
 
+float wHann(Point p, float t);
+
+float wHamming(Point p, float t);
+
+float wBlackman(Point p, float t);
+
 #endif

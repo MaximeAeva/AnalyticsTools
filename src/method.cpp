@@ -179,3 +179,24 @@ std::vector<Matrix<T> > svd_iter(Matrix<T> A)
     k.push_back(v);
     return k;
 }
+
+float wHann(Point p, float t)
+{ 
+    if(p.x>0 && p.x<t)
+        return p.y*(0.5-(0.5*cos(2*PI*(p.x/t)))); 
+    return 0;
+}
+
+float wHamming(Point p, float t)
+{ 
+    if(p.x>0 && p.x<t)
+        return p.y*(0.54-(0.46*cos(2*PI*(p.x/t)))); 
+    return 0;
+}
+
+float wBlackman(Point p, float t)
+{ 
+    if(p.x>0 && p.x<t)
+        return p.y*(0.42-(0.5*cos(2*PI*(p.x/t)))+(0.08*cos(4*PI*(p.x/t)))); 
+    return 0;
+}

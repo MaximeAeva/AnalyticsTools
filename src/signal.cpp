@@ -69,7 +69,7 @@ std::vector<Point> periodic(std::vector<fdata> harmonic, int n_pts, float wdw[2]
         p.x = x[i];
         p.y = 0;
         for(int k = 0; k<harmonic.size(); k++)
-            p.y += harmonic[k].amp*cos((2*PI*harmonic[k].f*i)+harmonic[k].phi);
+            p.y += (0.5*harmonic[k].amp)*cos((2*PI*harmonic[k].f*i)+harmonic[k].phi);
         P.push_back(p);
     }
     return P;
@@ -294,9 +294,37 @@ std::vector<Point> PSD(std::vector<Point> f)
     for(int i = 0; i<f.size(); i++)
     {
         Point p;
-        p.x = i*(fe/N)-(fe/2);
+        p.x = 1/((i*(fe/N)-(fe/2)));
         p.y = abs(M[f.size()-1-i])/(N/2);
         P.push_back(p);
+    }
+    return P;
+}
+
+/**
+ * @brief Convolve signal with a window to avoid edges phenomenon
+ * 
+ * @param f Function to convolve
+ * @param method Default : Rectangular. Option : hann, hamming, blackman
+ * @return std::vector<Point> 
+ */
+std::vector<Point> tapering(std::vector<Point> f, std::string method)
+{
+    std::vector<Point> P = f;
+    if(method == "hann")
+    {
+        for(int i = 0; i<f.size(); i++)
+            P[i].y = wHann(P[i], f.back().x);
+    }
+    else if(method == "hamming")
+    {
+        for(int i = 0; i<f.size(); i++)
+            P[i].y = wHamming(P[i], f.back().x);
+    }
+    else if(method == "blackman")
+    {
+        for(int i = 0; i<f.size(); i++)
+            P[i].y = wBlackman(P[i], f.back().x);
     }
     return P;
 }
