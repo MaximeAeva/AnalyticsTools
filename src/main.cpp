@@ -26,16 +26,12 @@ int main()
 
     //Define a range to get values
     float wdw[2] = {0, 10};
+    float wdw2[2] = {0, 1};
     int pts = 500;
 
     //Will contain timeFunc data points
     d1.values = tapering(periodic(fd1, pts, wdw), "blackman");
     d2.values = PSD(d1.values);
-
-    std::vector<data> cluster;
-    cluster.push_back(d1);
-    std::vector<data> clusterPSD;
-    clusterPSD.push_back(d2);
 
     //Define axis properties
     Axis x;
@@ -47,15 +43,26 @@ int main()
     y.range[0] = -1.1;
     y.range[1] = 1.1;
 
-    //Define axis properties for DSP
+    //Define axis properties for PSD
     Axis x1;
     Axis y1;
     y1.color = 'g';
     x1.color = 'r'; 
-    x1.range[0] = 0.02;
-    x1.range[1] = 0.1;
-    y1.range[0] = -0.1;
-    y1.range[1] = 1;
+    x1.range[0] = 0.039;
+    x1.range[1] = 0.055;
+    /*y1.range[0] = -0.1;
+    y1.range[1] = 1;*/
+
+    //Improving display resolution
+    std::vector<float> linspc = linspace(wdw2, 1000);
+
+    //Clustering
+    std::vector<data> cluster;
+    cluster.push_back(d1);
+    std::vector<data> clusterPSD;
+    clusterPSD.push_back(d2);
+
+    std::vector<Point> buff;
 
     clearScreen();
     int a;
@@ -71,8 +78,8 @@ int main()
         std::cin >> a;
         fd1.front().f = 0.5/i;
         cluster.front().values = tapering(periodic(fd1, pts, wdw), "blackman");
-        clusterPSD.front().values = PSD(cluster.front().values);
-        
+        clusterPSD.front().values = sample(PSD(cluster.front().values), 1000, "linear", x1.range);
+         
     }
 
     return 0;
