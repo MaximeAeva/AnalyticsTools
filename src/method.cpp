@@ -200,3 +200,45 @@ float wBlackman(Point p, float t)
         return p.y*(0.42-(0.5*cos(2*PI*(p.x/t)))+(0.08*cos(4*PI*(p.x/t)))); 
     return 0;
 }
+
+/**
+ * @brief k means method
+ * 
+ * @param p vector of points to classify
+ * @param clas Points of each class's center of mass
+ * @param iterations 
+ * @return Matrix<float> 
+ */
+Matrix<float> kmeans(std::vector<Point> p, std::vector<Point> *clas, int iterations)
+{
+    float d;
+    Matrix<float> ind(2, p.size());
+    Matrix<float> meanN(3, clas->size());
+    while(iterations)
+    {
+        for(int i = 0; i<p.size(); i++)
+        {
+            ind[i] = sqrt(pow(p[i].x-clas->at(0).x, 2)+pow(p[i].y-clas->at(0).y, 2));
+            ind[i+p.size()] = 0;
+            for(int j = 1; j<clas->size(); j++)
+            {
+                d = sqrt(pow(p[i].x-clas->at(j).x, 2)+pow(p[i].y-clas->at(j).y, 2));
+                if(d < ind[i])
+                {
+                    ind[i] = d;
+                    ind[i+p.size()] = j; 
+                }
+            }
+            meanN[int(ind[i+p.size()])] += p[i].x;
+            meanN[int(ind[i+p.size()])+clas->size()] += p[i].y;
+            meanN[int(ind[i+p.size()])+2*clas->size()] ++;  
+        }
+        for(int i = 0; i<clas->size(); i++)
+        {
+            clas->at(i).x = meanN[i]/meanN[i+2*clas->size()];
+            clas->at(i).y = meanN[i+clas->size()]/meanN[i+2*clas->size()];
+        }
+        iterations--;
+    }
+    return ind;
+}
