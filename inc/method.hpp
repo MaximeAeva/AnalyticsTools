@@ -25,4 +25,6 @@ float wHamming(Point p, float t);
 
 float wBlackman(Point p, float t);
 
+Matrix<float> kmeans(std::vector<Point> p, std::vector<Point> *clas, int iterations);
+
 #endif
